@@ -50,7 +50,6 @@
     .brutal-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #121212 !important; }
     .tab-active { background-color: #FFE853 !important; border-color: #121212 !important; box-shadow: 3px 3px 0 #121212 !important; }
     
-    /* Анимация всплывающего Toast-уведомления */
     #toast-msg {
       transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
       transform: translateY(100px);
@@ -64,7 +63,7 @@
 </head>
 <body class="p-3 pb-28 max-w-md mx-auto relative">
 
-  <!-- Всплывающий Toast об успешном действии -->
+  <!-- Всплывающий Toast об успехе -->
   <div id="toast-msg" class="fixed bottom-6 left-4 right-4 max-w-sm mx-auto z-50 bg-nbGreen border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal flex items-center gap-3 pointer-events-none">
     <div class="w-8 h-8 rounded-xl bg-white border-2 border-nbBorder flex items-center justify-center font-black text-base shrink-0">
       ✔
@@ -113,7 +112,7 @@
       </button>
     </nav>
 
-    <!-- Смена профиля -->
+    <!-- Смена стажера -->
     <div class="flex items-center justify-between bg-white border-2 border-nbBorder rounded-xl p-2 shadow-brutal-sm">
       <span class="text-xs font-black uppercase text-gray-500">Стажер:</span>
       <select id="trainee-switcher" onchange="changeTrainee(this.value)" class="bg-yellow-50 border border-nbBorder rounded-lg px-2 py-1 text-xs font-black">
@@ -279,18 +278,18 @@
               <h4 class="font-black text-base">Даня Рассохин</h4>
               <p class="text-xs font-bold text-gray-600">Неделя 5 • Старт: 13.07.2026</p>
             </div>
-            <span class="bg-nbPink text-white border border-nbBorder px-2 py-0.5 rounded text-[11px] font-black">
-              4 хвоста
+            <span class="bg-nbPink text-white border border-nbBorder px-2 py-0.5 rounded text-[11px] font-black" id="mentor-danya-debts">
+              3 хвоста
             </span>
           </div>
 
           <div class="mb-3">
             <div class="flex justify-between text-xs font-bold mb-1">
-              <span>Прогресс: 16 из 34 сдано</span>
-              <span class="font-black text-green-700">47%</span>
+              <span id="mentor-danya-passed-text">Прогресс: 17 из 34 сдано</span>
+              <span class="font-black text-green-700" id="mentor-danya-percent-text">50%</span>
             </div>
             <div class="w-full h-3 bg-white border border-nbBorder rounded-full overflow-hidden">
-              <div class="h-full bg-nbGreen" style="width: 47%;"></div>
+              <div class="h-full bg-nbGreen" id="mentor-danya-progress-bar" style="width: 50%;"></div>
             </div>
           </div>
 
@@ -389,9 +388,14 @@
       </div>
 
       <div class="space-y-2.5 mb-3">
-        <label class="text-xs font-black block">Тема зачета / норматива:</label>
-        <select id="modal-assessment-select" class="w-full bg-white border-2 border-nbBorder rounded-xl p-2 font-bold text-xs">
-          <!-- Генерируется из всех 34 тем -->
+        <div class="flex justify-between items-center">
+          <label class="text-xs font-black block">Тема зачета / норматива:</label>
+          <span id="modal-active-filter-hint" class="text-[10px] font-bold text-orange-600">Только несданные</span>
+        </div>
+        
+        <!-- ДИНАМИЧЕСКИЙ ВЫПАДАЮЩИЙ СПИСОК -->
+        <select id="modal-assessment-select" class="w-full bg-white border-2 border-nbBorder rounded-xl p-2 font-bold text-xs focus:outline-none">
+          <!-- Генерируется на лету -->
         </select>
 
         <label class="text-xs font-black block">Решение ментора:</label>
@@ -443,26 +447,26 @@
       { id: 'W3_1', week: 3, title: 'Дистилляция, мацерация, ферментация', type: 'Квиз' },
       { id: 'W3_2', week: 3, title: 'Действия в конфликтных ситуациях и ЧП', type: 'Квиз' },
       { id: 'W3_3', week: 3, title: 'Концепция актуальной коктейльной карты', type: 'Очный' },
-      { id: 'W4_1', week: 4, title: 'Меню кухни', type: 'Очный' },
-      { id: 'W4_2', week: 4, title: 'Виски', type: 'Очный' },
-      { id: 'W4_3', week: 4, title: 'Уанпейджеры виски', type: 'Квиз' },
-      { id: 'W4_4', week: 4, title: 'Техники и технологии (ротор/сувид)', type: 'Очный' },
-      { id: 'W4_5', week: 4, title: 'ТТК первая половина классики', type: 'Очный' },
-      { id: 'W5_1', week: 5, title: 'Уанпейджеры джин, женевер, водка', type: 'Квиз' },
-      { id: 'W5_2', week: 5, title: 'Джин, женевер и водка', type: 'Очный' },
-      { id: 'W5_3', week: 5, title: 'Вкусообразование', type: 'Квиз' },
-      { id: 'W5_4', week: 5, title: 'Работа с АЙКО', type: 'Очный' },
-      { id: 'W6_1', week: 6, title: 'Уанпейджеры текила и ром', type: 'Квиз' },
+      { id: 'W4_1', week: 4, title: 'Легенды классических напитков', type: 'Очный' },
+      { id: 'W4_2', week: 4, title: 'Меню кухни', type: 'Очный' },
+      { id: 'W4_3', week: 4, title: 'Виски', type: 'Очный' },
+      { id: 'W4_4', week: 4, title: 'Уанпейджеры виски', type: 'Квиз' },
+      { id: 'W4_5', week: 4, title: 'Техники и технологии (ротор/сувид)', type: 'Очный' },
+      { id: 'W5_1', week: 5, title: 'ТТК первая половина классики, Карта и сезонные', type: 'Очный' },
+      { id: 'W5_2', week: 5, title: 'Вкусообразование', type: 'Квиз' },
+      { id: 'W5_3', week: 5, title: 'Джин, женевер и водка', type: 'Очный' },
+      { id: 'W5_4', week: 5, title: 'Уанпейджеры джин, женевер, водка', type: 'Квиз' },
+      { id: 'W6_1', week: 6, title: 'Работа с АЙКО', type: 'Очный' },
       { id: 'W6_2', week: 6, title: 'Текила и ром', type: 'Очный' },
-      { id: 'W6_3', week: 6, title: 'ТТК вторая половина классики', type: 'Очный' },
-      { id: 'W7_1', week: 7, title: 'Амаро, вермуты, ликеры и анисовые', type: 'Очный' },
-      { id: 'W7_2', week: 7, title: 'Уанпейджеры Амаро и ликеры', type: 'Квиз' },
-      { id: 'W7_3', week: 7, title: 'Готовим и презентуем (сторителлинг)', type: 'Очный' },
-      { id: 'W7_4', week: 7, title: 'Бренди', type: 'Очный' },
-      { id: 'W8_1', week: 8, title: 'Уанпейджеры Бренди', type: 'Квиз' },
-      { id: 'W8_2', week: 8, title: 'Техника работы за баром (спид-раунд)', type: 'Очный' },
-      { id: 'W9_1', week: 9, title: 'Крепленые вина', type: 'Очный' },
-      { id: 'W9_2', week: 9, title: 'Уанпейджеры крепленые вина', type: 'Квиз' },
+      { id: 'W6_3', week: 6, title: 'Уанпейджеры текила и ром', type: 'Квиз' },
+      { id: 'W7_1', week: 7, title: 'ТТК вторая половина классики', type: 'Очный' },
+      { id: 'W7_2', week: 7, title: 'Амаро, вермуты, ликеры и анисовые', type: 'Очный' },
+      { id: 'W7_3', week: 7, title: 'Уанпейджеры Амаро и ликеры', type: 'Квиз' },
+      { id: 'W7_4', week: 7, title: 'Готовим и презентуем (сторителлинг)', type: 'Очный' },
+      { id: 'W8_1', week: 8, title: 'Бренди', type: 'Очный' },
+      { id: 'W8_2', week: 8, title: 'Уанпейджеры Бренди', type: 'Квиз' },
+      { id: 'W9_1', week: 9, title: 'Техника работы за баром (спид-раунд)', type: 'Очный' },
+      { id: 'W9_2', week: 9, title: 'Крепленые вина', type: 'Очный' },
       { id: 'W9_3', week: 9, title: 'Азиатский алкоголь', type: 'Очный' },
       { id: 'W10_1', week: 10, title: 'Финальная аттестация («Досдача хвостов»)', type: 'Очный' }
     ];
@@ -474,10 +478,11 @@
           'Тест по ценностям', 'Философия бара (уанпейджер)', 'Функциональные карты ролей', 'Правила гигиены',
           'Карта коммуникаций', 'Внешний вид сотрудника и бара', 'Словари бара и кухни', 'Сервис и приоритеты',
           'Экскурсия по бару', 'Дистилляция, мацерация, ферментация', 'Действия в конфликтных ситуациях и ЧП',
-          'Концепция актуальной коктейльной карты', 'Меню кухни', 'Виски', 'Уанпейджеры виски', 'Уанпейджеры джин, женевер, водка'
+          'Концепция актуальной коктейльной карты', 'Меню кухни', 'Виски', 'Уанпейджеры виски',
+          'Уанпейджеры джин, женевер, водка', 'Джин, женевер и водка', 'ТТК первая половина классики, Карта и сезонные'
         ],
         debts: [
-          'ТТК первая половина классики', 'Техники и технологии (ротор/сувид)', 'Вкусообразование', 'Легенды классических напитков'
+          'Легенды классических напитков', 'Техники и технологии (ротор/сувид)', 'Вкусообразование'
         ]
       },
       'Диана Алиева': {
@@ -495,7 +500,6 @@
         window.Telegram.WebApp.ready();
         window.Telegram.WebApp.expand();
       }
-      populateAssessmentSelect();
       renderWeeksSelector();
       renderWeekDetails(selectedWeek);
       openNotionCategory('intro');
@@ -503,15 +507,69 @@
       renderMentorSheet('Даня Рассохин');
     };
 
-    // Наполнение выпадающего списка 34 тем
-    function populateAssessmentSelect() {
+    // ФОРМИРОВАНИЕ СПИСКА ТЕМ ДЛЯ МОДАЛКИ (С ФИЛЬТРАЦИЕЙ СДАННЫХ)
+    function populateAssessmentSelectForStudent(studentName, preselectedTopic = null) {
       const select = document.getElementById('modal-assessment-select');
-      select.innerHTML = ALL_ASSESSMENTS.map(a => `
-        <option value="${a.title}">[Нед. ${a.week}] ${a.title} (${a.type})</option>
-      `).join('');
+      const s = STUDENT_DATA[studentName] || STUDENT_DATA['Даня Рассохин'];
+
+      const debtsList = [];
+      const pendingList = [];
+      const alreadyPassedList = [];
+
+      ALL_ASSESSMENTS.forEach(a => {
+        const isDebt = s.debts.includes(a.title);
+        const isPassed = s.passedList.includes(a.title);
+
+        if (isDebt) {
+          debtsList.push(a);
+        } else if (!isPassed) {
+          pendingList.push(a);
+        } else {
+          alreadyPassedList.push(a);
+        }
+      });
+
+      let html = '';
+
+      if (debtsList.length > 0) {
+        html += `<optgroup label="⚠️ ХВОСТЫ (ТРЕБУЮТ СДАЧИ)">`;
+        debtsList.forEach(a => {
+          html += `<option value="${a.title}">⚠️ [Нед. ${a.week}] ${a.title}</option>`;
+        });
+        html += `</optgroup>`;
+      }
+
+      if (pendingList.length > 0) {
+        html += `<optgroup label="⏳ ПЛАНОВЫЕ НОРМАТИВЫ">`;
+        pendingList.forEach(a => {
+          html += `<option value="${a.title}">[Нед. ${a.week}] ${a.title} (${a.type})</option>`;
+        });
+        html += `</optgroup>`;
+      }
+
+      if (alreadyPassedList.length > 0) {
+        html += `<optgroup label="✔ УЖЕ СДАННЫЕ (ДЛЯ ПЕРЕСДАЧИ)">`;
+        alreadyPassedList.forEach(a => {
+          html += `<option value="${a.title}">✔ [Нед. ${a.week}] ${a.title}</option>`;
+        });
+        html += `</optgroup>`;
+      }
+
+      select.innerHTML = html;
+
+      if (preselectedTopic) {
+        // Умное выделение нужного пункта
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value === preselectedTopic || 
+              select.options[i].value.includes(preselectedTopic) || 
+              preselectedTopic.includes(select.options[i].value)) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
     }
 
-    // Всплывающее уведомление (Toast)
     function showToast(title, text) {
       const toast = document.getElementById('toast-msg');
       document.getElementById('toast-title').innerText = title;
@@ -567,6 +625,14 @@
       document.getElementById('debts-count-badge').innerText = s.debts.length + ' долгов';
       document.getElementById('trainee-debts-inline').innerText = s.debts.length ? `${s.debts.length} хвоста` : 'Хвостов нет';
 
+      // Обновление карточки Дани в кабинете ментора
+      if (name === 'Даня Рассохин') {
+        document.getElementById('mentor-danya-debts').innerText = s.debts.length ? `${s.debts.length} хвоста` : 'Без долгов';
+        document.getElementById('mentor-danya-passed-text').innerText = `Прогресс: ${passedCount} из 34 сдано`;
+        document.getElementById('mentor-danya-percent-text').innerText = `${percent}%`;
+        document.getElementById('mentor-danya-progress-bar').style.width = `${percent}%`;
+      }
+
       const debtsContainer = document.getElementById('debts-list-container');
       if (s.debts.length === 0) {
         debtsContainer.innerHTML = '<div class="p-3 text-xs font-bold text-green-700 bg-green-50 rounded-xl border border-nbBorder">🎉 Все аттестации сданы в срок! Хвостов нет.</div>';
@@ -583,6 +649,7 @@
       }
     }
 
+    // РАБОТАЮЩАЯ ВЕДОМОСТЬ МЕНТОРА С КНОПКОЙ «ИЗМ.»
     function renderMentorSheet(studentName) {
       const s = STUDENT_DATA[studentName];
       const container = document.getElementById('mentor-sheet-rows');
@@ -602,15 +669,18 @@
           rowBg = 'bg-gray-50';
         }
 
+        // Экранируем кавычки для безопасной передачи в onclick
+        const escapedTitle = a.title.replace(/'/g, "\\'");
+
         return `
-          <div class="p-2.5 border-2 border-nbBorder rounded-xl ${rowBg} flex items-center justify-between transition-all" id="row-${a.id}">
+          <div class="p-2.5 border-2 border-nbBorder rounded-xl ${rowBg} flex items-center justify-between transition-all">
             <div class="pr-2">
               <span class="text-[10px] font-black text-gray-500 block uppercase">Н${a.week} • ${a.type}</span>
               <h5 class="text-xs font-extrabold leading-tight">${a.title}</h5>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
-              <span id="badge-${a.id}">${badge}</span>
-              <button onclick="quickToggleStatus('${studentName}', '${a.title}')" class="px-2 py-1 bg-white border border-nbBorder rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn">
+              <span>${badge}</span>
+              <button onclick="quickToggleStatus('${studentName}', '${escapedTitle}')" class="px-2 py-1 bg-white border border-nbBorder rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn hover:bg-yellow-100">
                 Изм.
               </button>
             </div>
@@ -625,9 +695,9 @@
       renderMentorSheet(name);
     }
 
+    // ИСПРАВЛЕННЫЙ ВЫЗОВ «ИЗМ.»: СРАЗУ ОТКРЫВАЕТ МОДАЛКУ С НУЖНОЙ ТЕМОЙ
     function quickToggleStatus(student, assessment) {
-      openMentorAssessmentModal(student);
-      document.getElementById('modal-assessment-select').value = assessment;
+      openMentorAssessmentModal(student, assessment);
     }
 
     function renderWeeksSelector() {
@@ -703,9 +773,11 @@
       document.getElementById('quiz-unlocked-view').classList.add('hidden');
     }
 
-    function openMentorAssessmentModal(student) {
+    // ОТКРЫТИЕ МОДАЛКИ С ПРЕДВЫБОРОМ
+    function openMentorAssessmentModal(student, preselectedTopic = null) {
       currentStudent = student;
       document.getElementById('modal-student-title').innerText = 'Студент: ' + student;
+      populateAssessmentSelectForStudent(student, preselectedTopic);
       document.getElementById('mentor-modal').classList.remove('hidden');
     }
 
@@ -720,13 +792,12 @@
       document.getElementById('btn-decision-retry').classList.toggle('tab-active', d === 'Пересдача');
     }
 
-    // Надежная отправка в Google Таблицу через Content-Type: text/plain
     async function submitMentorAssessment() {
-      const assessment = document.getElementById('modal-assessment-select').value;
+      const select = document.getElementById('modal-assessment-select');
+      const assessment = select.value;
       const feedback = document.getElementById('modal-feedback-input').value;
       const saveBtn = document.getElementById('btn-save-assessment');
 
-      // Анимация кнопки (лоадер)
       saveBtn.disabled = true;
       saveBtn.innerHTML = '<span>⏳ Запись в таблицу...</span>';
 
@@ -740,7 +811,6 @@
       };
 
       try {
-        // Отправка через text/plain обходит блокировки CORS браузера
         await fetch(API_URL, {
           method: 'POST',
           mode: 'no-cors',
@@ -748,7 +818,6 @@
           body: JSON.stringify(payload)
         });
 
-        // Мгновенно обновляем локальный стейт
         const s = STUDENT_DATA[currentStudent];
         if (modalDecision === 'Сдано') {
           if (!s.passedList.includes(assessment)) s.passedList.push(assessment);
@@ -758,11 +827,9 @@
           if (!s.debts.includes(assessment)) s.debts.push(assessment);
         }
 
-        // Обновляем визуальную ведомость и профиль стажера
         renderMentorSheet(currentStudent);
         updateTraineeUI(currentStudent);
 
-        // Показываем Toast-анимацию
         showToast('Зачет зафиксирован!', `${assessment} — ${modalDecision}`);
         closeMentorModal();
       } catch (err) {
