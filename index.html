@@ -120,7 +120,7 @@
 
   <!-- ==================== ЭКРАН: СТАЖЕР ==================== -->
   <div id="view-trainee" class="hidden space-y-4">
-    <!-- Кнопка ТРЕНИНГ без эмодзи -->
+    <!-- Кнопка «СДАЧА» вместо «ТЕОРИЯ» и лаконичный «ТРЕНИНГ» -->
     <nav class="grid grid-cols-5 gap-1">
       <button onclick="setTraineeTab('track')" id="nav-track" class="py-2 text-[11px] font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn tab-active">
         НЕДЕЛИ
@@ -129,7 +129,7 @@
         НОУШЕН
       </button>
       <button onclick="setTraineeTab('quizzes')" id="nav-quizzes" class="py-2 text-[11px] font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
-        ТЕОРИЯ
+        СДАЧА
       </button>
       <button onclick="setTraineeTab('trainer')" id="nav-trainer" class="py-2 text-[11px] font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
         ТРЕНИНГ
@@ -203,21 +203,23 @@
       </div>
     </section>
 
-    <!-- Вкладка Теория -->
+    <!-- Вкладка Сдача: официальные формы -->
     <section id="trainee-tab-quizzes" class="hidden space-y-3">
+      <!-- Закрыто -->
       <div id="quiz-locked-view" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-5 shadow-brutal text-center space-y-3">
         <div class="w-14 h-14 bg-nbPink border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm">
           🔒
         </div>
         <h3 class="text-base font-black uppercase">Опросники заблокированы</h3>
         <p class="text-xs font-bold text-gray-600 leading-relaxed">
-          Официальная сдача проводится очно на смене. Попросите ментора открыть вам доступ со своего телефона.
+          Официальная сдача проводится очно по договоренности с ментором. Попросите ментора открыть вам доступ со своего телефона.
         </p>
         <button onclick="checkMyQuizAccess()" class="w-full bg-nbYellow border-2 border-nbBorder font-black py-2.5 rounded-xl shadow-brutal-sm brutal-btn text-xs uppercase">
-          🔄 Проверить доступ
+          Проверить доступ
         </button>
       </div>
 
+      <!-- Открыто -->
       <div id="quiz-unlocked-view" class="hidden space-y-3">
         <div class="bg-nbGreen border-[2.5px] border-nbBorder rounded-2xl p-3 shadow-brutal flex items-center justify-between">
           <div>
@@ -256,9 +258,9 @@
       </div>
     </section>
 
-    <!-- ВКЛАДКА: АВТОНОМНЫЙ ТРЕНАЖЕР -->
+    <!-- ВКЛАДКА: ТРЕНИНГ -->
     <section id="trainee-tab-trainer" class="hidden space-y-3">
-      <!-- Настройка -->
+      <!-- Настройка тренировки -->
       <div id="trainer-setup-card" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal space-y-3">
         <div class="flex items-center gap-2 border-b-2 border-nbBorder pb-2">
           <span class="text-2xl">🎯</span>
@@ -274,8 +276,7 @@
             <option value="">Все спириты (микс)</option>
             <option value="ASM-010">Виски и бурбон</option>
             <option value="ASM-014">Текила, мескаль и ром</option>
-            <option value="ASM-012">Джин и женевер</option>
-            <option value="ASM-013">Водка и уанпейджеры</option>
+            <option value="gin_vodka">Джин, женевер и водка</option>
             <option value="ASM-001">Стандарты и ценности</option>
             <option value="ASM-004">Сервис и правила зала</option>
           </select>
@@ -653,9 +654,9 @@
         const selector = document.getElementById('trainee-quiz-selector');
 
         if (pendingQuizzes.length === 0) {
-          selector.innerHTML = '<option value="">Все теоретические опросники сданы! 🎉</option>';
+          selector.innerHTML = '<option value="">Все опросники сданы! 🎉</option>';
           document.getElementById('selected-quiz-week').innerText = 'Финиш';
-          document.getElementById('selected-quiz-title').innerText = 'Теория закрыта на 100%';
+          document.getElementById('selected-quiz-title').innerText = 'Все опросники закрыты на 100%';
           document.getElementById('selected-quiz-status-pill').innerText = 'СДАНО';
           document.getElementById('selected-quiz-status-pill').className = 'bg-nbGreen border border-nbBorder px-2 py-0.5 rounded text-[10px] font-black uppercase';
           document.getElementById('quiz-unlocked-link').classList.add('hidden');
@@ -678,7 +679,7 @@
       const quizInfo = QUIZ_LINKS_MAP[quizTitle];
 
       if (record && quizInfo) {
-        document.getElementById('selected-quiz-week').innerText = `Неделя ${record.week_id} • Теория`;
+        document.getElementById('selected-quiz-week').innerText = `Неделя ${record.week_id} • Сдача`;
         document.getElementById('selected-quiz-title').innerText = record.title;
         
         const pill = document.getElementById('selected-quiz-status-pill');
@@ -725,7 +726,6 @@
     async function startTrainerSession() {
       const category = document.getElementById('trainer-category-select').value;
       
-      // Не кэшируем, чтобы каждый раз был свежий рандом вопросов и вариантов
       document.getElementById('loading-bar').classList.remove('hidden');
       document.getElementById('loading-text').innerText = 'Загрузка вопросов тренажера...';
 
@@ -791,7 +791,7 @@
 
       const allBtns = document.querySelectorAll('.trainer-opt-btn');
 
-      // Подсвечиваем все кнопки
+      // Подсвечиваем кнопки
       allBtns.forEach(btn => {
         btn.disabled = true;
         const bText = decodeURIComponent(btn.getAttribute('data-text') || '').trim().toLowerCase();
@@ -837,7 +837,7 @@
 
       const verdict = document.getElementById('trainer-feedback-verdict');
       if (percent >= 80) {
-        verdict.innerText = '🔥 Потрясающий уровень! Ты полностью готов к сдаче теории ментору.';
+        verdict.innerText = '🔥 Потрясающий уровень! Ты полностью готов к сдаче темы ментору.';
       } else if (percent >= 60) {
         verdict.innerText = '👍 Хорошая база, но стоит повторить пару уанпейджеров перед выходом на смену.';
       } else {
