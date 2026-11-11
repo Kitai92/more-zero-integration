@@ -88,7 +88,7 @@
       </div>
     </div>
 
-    <!-- Бейдж текущей роли -->
+    <!-- Бейдж роли -->
     <div id="user-role-badge" class="bg-white border-2 border-nbBorder rounded-xl px-2.5 py-1 text-xs font-black shadow-brutal-sm">
       Загрузка...
     </div>
@@ -107,7 +107,7 @@
     </div>
     <h3 class="text-base font-black uppercase">Профиль не активирован</h3>
     <p class="text-xs font-bold text-gray-600 leading-relaxed">
-      Вас пока нет в базе интеграции More & Zero. Скопируйте ваш идентификатор и отправьте сервис-тренеру:
+      Вас пока нет в базе интеграции More & Zero. Скопируйте ваш идентификатор и отправьте ментору:
     </p>
     <div class="bg-yellow-50 border-2 border-dashed border-nbBorder rounded-xl p-3">
       <span class="text-[11px] font-bold text-gray-500 block">Ваш Telegram ID:</span>
@@ -199,25 +199,40 @@
       </div>
     </section>
 
-    <!-- Вкладка Квизы -->
+    <!-- Вкладка Квизы (Авто-проверка таймера допуска) -->
     <section id="trainee-tab-quizzes" class="hidden">
-      <div id="quiz-locked-view" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-5 shadow-brutal text-center">
-        <div class="w-14 h-14 bg-nbPink border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm mb-3">
+      <!-- Закрыто -->
+      <div id="quiz-locked-view" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-5 shadow-brutal text-center space-y-3">
+        <div class="w-14 h-14 bg-nbPink border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm">
           🔒
         </div>
-        <h3 class="text-base font-black uppercase">Очный допуск к квизу</h3>
-        <p class="text-xs font-bold text-gray-600 mt-1 mb-4">
-          Подойдите к ментору на смене, чтобы получить 4-значный PIN.
+        <h3 class="text-base font-black uppercase">Тестирование заблокировано</h3>
+        <p class="text-xs font-bold text-gray-600 leading-relaxed">
+          Квиз сдается очно. Попросите ментора на смене открыть вам доступ кнопкой со своего телефона.
         </p>
-        <div class="bg-yellow-50 border-2 border-dashed border-nbBorder rounded-xl p-3 mb-4">
-          <span class="text-xs font-bold block mb-2">Введите PIN ментора:</span>
-          <div class="flex justify-center gap-2">
-            <input type="password" maxlength="4" id="mentor-pin-input" placeholder="••••" 
-                   class="w-32 text-center tracking-widest text-lg font-black bg-white border-2 border-nbBorder rounded-xl py-2 focus:outline-none shadow-brutal-sm">
-            <button onclick="unlockQuizWithPin()" class="bg-nbGreen font-black px-4 py-2 border-2 border-nbBorder rounded-xl shadow-brutal-sm brutal-btn">
-              OK
-            </button>
+        <button onclick="checkMyQuizAccess()" class="w-full bg-nbYellow border-2 border-nbBorder font-black py-2.5 rounded-xl shadow-brutal-sm brutal-btn text-xs uppercase">
+          🔄 Проверить доступ
+        </button>
+      </div>
+
+      <!-- Открыто ментором -->
+      <div id="quiz-unlocked-view" class="hidden space-y-3">
+        <div class="bg-nbGreen border-[2.5px] border-nbBorder rounded-2xl p-3 shadow-brutal flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-black uppercase block text-gray-800">Доступ открыт ментором</span>
+            <span id="quiz-timer-text" class="text-xs font-black">Осталось: 30:00</span>
           </div>
+          <button onclick="checkMyQuizAccess()" class="bg-white border border-nbBorder px-2 py-1 rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn">
+            Обновить
+          </button>
+        </div>
+
+        <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal text-center">
+          <h4 class="font-black text-sm uppercase mb-2">Актуальный квиз недели</h4>
+          <p class="text-xs font-bold text-gray-600 mb-4">15 вопросов • Проходной порог 80%</p>
+          <a href="https://forms.gle/8nE7tEEDvCzXoy6L7" target="_blank" class="block w-full bg-nbYellow border-2 border-nbBorder py-3 rounded-xl font-black text-xs uppercase shadow-brutal-sm brutal-btn">
+            Начать тестирование ➔
+          </a>
         </div>
       </div>
     </section>
@@ -241,7 +256,7 @@
         📊 ВЕДОМОСТЬ ЗАЧЕТОВ
       </button>
       <button onclick="setMentorTab('access')" id="m-nav-access" class="py-2.5 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
-        🔑 PIN И ДОСТУП
+        🔓 ДОСТУП К КВИЗАМ
       </button>
     </nav>
 
@@ -253,9 +268,9 @@
           <h2 class="text-xl font-black mt-1" id="mentor-display-name">Ментор</h2>
           <p class="text-xs font-bold text-purple-200" id="mentor-bars-info">Бары: More & Zero</p>
         </div>
-        <div class="bg-nbYellow text-nbBorder border-2 border-nbBorder rounded-xl px-2.5 py-1 text-center shadow-brutal-sm">
-          <span class="text-[9px] block font-black leading-none">PIN СМЕНЫ</span>
-          <span class="text-sm font-black">7788</span>
+        <div class="bg-nbGreen text-nbBorder border-2 border-nbBorder rounded-xl px-2.5 py-1 text-center shadow-brutal-sm">
+          <span class="text-[9px] block font-black leading-none">РЕЖИМ</span>
+          <span class="text-xs font-black">Онлайн</span>
         </div>
       </div>
     </div>
@@ -268,9 +283,7 @@
             <h3 class="font-black text-sm uppercase">Сводная ведомость</h3>
             <p class="text-[11px] font-bold text-gray-500">34 норматива из таблицы</p>
           </div>
-          <!-- Динамический список стажеров -->
           <select id="sheet-student-select" onchange="loadStudentLiveRecords(this.value)" class="bg-yellow-50 border-2 border-nbBorder rounded-lg px-2 py-1 text-xs font-black">
-            <!-- Подгружается из листа Students -->
           </select>
         </div>
 
@@ -278,16 +291,40 @@
       </div>
     </section>
 
-    <!-- ДОСТУП И КВИЗЫ -->
+    <!-- УПРАВЛЕНИЕ ДОСТУПОМ К КВИЗАМ КНОПКАМИ -->
     <section id="mentor-tab-access" class="hidden space-y-3">
-      <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal text-center">
-        <div class="w-14 h-14 bg-nbYellow border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm mb-3">
-          🔑
-        </div>
-        <h3 class="font-black text-base uppercase">Мастер-PIN: 7788</h3>
-        <p class="text-xs font-bold text-gray-600 mt-1 mb-4 leading-relaxed">
-          Назовите этот код стажеру при личной сдаче квиза за контактной стойкой.
+      <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
+        <h3 class="font-black text-sm uppercase mb-2">Управление доступом к квизам</h3>
+        <p class="text-xs font-bold text-gray-600 mb-4">
+          Нажмите кнопку, чтобы открыть выбранному стажеру тестирование на 30 минут без ввода PIN-кодов.
         </p>
+
+        <div class="border-2 border-nbBorder rounded-xl p-3 bg-yellow-50 mb-3 space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-black uppercase">Выбрать стажера:</span>
+            <select id="access-student-select" onchange="updateAccessCardStatus(this.value)" class="bg-white border-2 border-nbBorder rounded-lg px-2 py-1 text-xs font-black">
+            </select>
+          </div>
+
+          <div class="p-2.5 bg-white border-2 border-nbBorder rounded-xl flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-bold text-gray-500 block">Текущий статус допуска:</span>
+              <span id="access-current-status-label" class="text-xs font-black text-red-600">Закрыт</span>
+            </div>
+            <span id="access-timer-badge" class="hidden bg-nbGreen border border-nbBorder px-2 py-0.5 rounded text-[11px] font-black">
+              Осталось: --:--
+            </span>
+          </div>
+
+          <div class="flex gap-2">
+            <button id="btn-grant-access" onclick="toggleQuizAccess(true)" class="flex-1 bg-nbGreen border-2 border-nbBorder py-2.5 rounded-xl font-black text-xs shadow-brutal-sm brutal-btn uppercase">
+              🟢 Открыть на 30 мин
+            </button>
+            <button id="btn-revoke-access" onclick="toggleQuizAccess(false)" class="px-3 bg-nbPink text-white border-2 border-nbBorder py-2.5 rounded-xl font-black text-xs shadow-brutal-sm brutal-btn uppercase">
+              ✕ Закрыть
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -333,7 +370,6 @@
 
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbxLB0wmFOrNd-fzn-Uise4kut8DNmDl5GgDlgL39loa49XEc0FOfDppZXFkc3lrE-E0Aw/exec';
-    const MASTER_PIN = '7788';
     const TOTAL_ASSESSMENTS = 34;
 
     let currentRole = 'trainee';
@@ -341,6 +377,8 @@
     let activeStudentName = '';
     let currentRecords = [];
     let modalDecision = 'Сдано';
+    let myQuizAccessUntil = 0;
+    let studentsDashboardList = [];
 
     window.onload = function() {
       if (window.Telegram && window.Telegram.WebApp) {
@@ -348,9 +386,9 @@
         window.Telegram.WebApp.expand();
       }
       initAppAuth();
+      setInterval(updateCountdowns, 1000);
     };
 
-    // АВТОМАТИЧЕСКАЯ АВТОРИЗАЦИЯ
     async function initAppAuth() {
       let tgId = '';
       let tgUser = '';
@@ -360,13 +398,11 @@
         tgUser = window.Telegram.WebApp.initDataUnsafe.user.username || '';
       }
 
-      // Параметры для теста в браузере (?id=... или ?user=...)
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('id')) tgId = urlParams.get('id');
       if (urlParams.get('user')) tgUser = urlParams.get('user');
 
       if (!tgId && !tgUser) {
-        // Дефолт для браузерной проверки: Даня Рассохин
         tgUser = 'Даня Рассохин';
       }
 
@@ -392,7 +428,6 @@
       }
     }
 
-    // НАСТРОЙКА ЭКРАНА СТАЖЕРА
     function setupTraineeScreen(data) {
       currentRole = 'trainee';
       document.getElementById('view-trainee').classList.remove('hidden');
@@ -402,8 +437,10 @@
       document.getElementById('trainee-name-display').innerText = s.name;
       document.getElementById('trainee-week-tag').innerText = `Неделя ${s.current_week} из 10`;
 
+      myQuizAccessUntil = s.quiz_access_until || 0;
       currentRecords = data.records || [];
       renderTraineeData(data.passed_count, data.debts_count, currentRecords);
+      evaluateQuizState();
     }
 
     function renderTraineeData(passedCount, debtsCount, records) {
@@ -413,7 +450,6 @@
       document.getElementById('trainee-debts-inline').innerText = `${debtsCount} хвостов`;
       document.getElementById('debts-count-badge').innerText = `${debtsCount} долгов`;
 
-      // Список всех нормативов
       const container = document.getElementById('trainee-records-list');
       container.innerHTML = records.map(r => {
         let badge = '<span class="bg-gray-100 text-gray-600 border border-nbBorder px-1.5 py-0.5 rounded text-[10px] font-bold">Ожидает</span>';
@@ -438,7 +474,6 @@
         `;
       }).join('');
 
-      // Реестр долгов
       const debts = records.filter(r => r.status === 'Хвост' || r.status === 'Не сдано');
       const debtsContainer = document.getElementById('debts-list-container');
       if (debts.length === 0) {
@@ -456,7 +491,29 @@
       }
     }
 
-    // НАСТРОЙКА ЭКРАНА МЕНТОРА
+    function evaluateQuizState() {
+      const now = Date.now();
+      const isOpen = myQuizAccessUntil > now;
+
+      document.getElementById('quiz-locked-view').classList.toggle('hidden', isOpen);
+      document.getElementById('quiz-unlocked-view').classList.toggle('hidden', !isOpen);
+    }
+
+    async function checkMyQuizAccess() {
+      const name = document.getElementById('trainee-name-display').innerText;
+      try {
+        const response = await fetch(`${API_URL}?action=get_student_live&name=${encodeURIComponent(name)}`);
+        const data = await response.json();
+        if (data.success) {
+          myQuizAccessUntil = data.quiz_access_until || 0;
+          evaluateQuizState();
+          showToast('Статус обновлен', myQuizAccessUntil > Date.now() ? 'Доступ открыт!' : 'Доступ закрыт');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
     async function setupMentorScreen(data) {
       currentRole = 'mentor';
       document.getElementById('view-mentor').classList.remove('hidden');
@@ -465,26 +522,29 @@
       document.getElementById('mentor-bars-info').innerText = 'Бары: ' + (data.bars || 'More & Zero');
       currentMentorName = data.name;
 
-      // Загружаем список всех стажеров
       const res = await fetch(`${API_URL}?action=get_mentor_dashboard`);
       const dash = await res.json();
 
       if (dash.success && dash.students && dash.students.length > 0) {
-        const select = document.getElementById('sheet-student-select');
-        select.innerHTML = dash.students.map(s => `
-          <option value="${s.name}">${s.name} (${s.passed_count}/34)</option>
+        studentsDashboardList = dash.students;
+
+        const optionsHtml = dash.students.map(s => `
+          <option value="${s.name}">${s.name}</option>
         `).join('');
+
+        document.getElementById('sheet-student-select').innerHTML = optionsHtml;
+        document.getElementById('access-student-select').innerHTML = optionsHtml;
 
         activeStudentName = dash.students[0].name;
         loadStudentLiveRecords(activeStudentName);
+        updateAccessCardStatus(activeStudentName);
       }
     }
 
-    // Чтение записей выбранного стажера
     async function loadStudentLiveRecords(studentName) {
       activeStudentName = studentName;
       document.getElementById('loading-bar').classList.remove('hidden');
-      document.getElementById('loading-text').innerText = `Синхронизация с таблицей: ${studentName}...`;
+      document.getElementById('loading-text').innerText = `Синхронизация: ${studentName}...`;
 
       try {
         const response = await fetch(`${API_URL}?action=get_student_live&name=${encodeURIComponent(studentName)}`);
@@ -493,11 +553,95 @@
         if (data.success && data.records) {
           currentRecords = data.records;
           renderMentorSheet(currentRecords);
+
+          const studentObj = studentsDashboardList.find(s => s.name === studentName);
+          if (studentObj) {
+            studentObj.quiz_access_until = data.quiz_access_until || 0;
+            updateAccessCardStatus(studentName);
+          }
         }
       } catch (err) {
         console.error(err);
       } finally {
         setTimeout(() => document.getElementById('loading-bar').classList.add('hidden'), 400);
+      }
+    }
+
+    function updateAccessCardStatus(studentName) {
+      const studentObj = studentsDashboardList.find(s => s.name === studentName);
+      const accessUntil = studentObj ? (studentObj.quiz_access_until || 0) : 0;
+      const isOpen = accessUntil > Date.now();
+
+      const label = document.getElementById('access-current-status-label');
+      const badge = document.getElementById('access-timer-badge');
+
+      if (isOpen) {
+        label.innerText = '🟢 Открыт на 30 мин';
+        label.className = 'text-xs font-black text-green-700';
+        badge.classList.remove('hidden');
+      } else {
+        label.innerText = '🔴 Закрыт';
+        label.className = 'text-xs font-black text-red-600';
+        badge.classList.add('hidden');
+      }
+    }
+
+    async function toggleQuizAccess(enable) {
+      const studentSelect = document.getElementById('access-student-select');
+      const targetStudent = studentSelect.value;
+      const btn = enable ? document.getElementById('btn-grant-access') : document.getElementById('btn-revoke-access');
+
+      btn.disabled = true;
+
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            action: 'toggle_quiz_access',
+            student_name: targetStudent,
+            enable: enable
+          })
+        });
+
+        showToast(enable ? 'Доступ открыт!' : 'Доступ отозван', `${targetStudent}`);
+        setTimeout(() => loadStudentLiveRecords(targetStudent), 600);
+      } catch (err) {
+        console.error(err);
+        showToast('Ошибка сети', 'Не удалось связаться с сервером');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function updateCountdowns() {
+      const now = Date.now();
+
+      // Таймер стажера
+      if (currentRole === 'trainee' && myQuizAccessUntil > now) {
+        const leftSec = Math.floor((myQuizAccessUntil - now) / 1000);
+        const m = Math.floor(leftSec / 60);
+        const s = leftSec % 60;
+        document.getElementById('quiz-timer-text').innerText = `Осталось: ${m}:${s < 10 ? '0' : ''}${s}`;
+      } else if (currentRole === 'trainee' && myQuizAccessUntil > 0 && myQuizAccessUntil <= now) {
+        myQuizAccessUntil = 0;
+        evaluateQuizState();
+      }
+
+      // Таймер в кабинете ментора
+      const accessStudent = document.getElementById('access-student-select') ? document.getElementById('access-student-select').value : null;
+      if (accessStudent) {
+        const studentObj = studentsDashboardList.find(s => s.name === accessStudent);
+        if (studentObj && studentObj.quiz_access_until > now) {
+          const leftSec = Math.floor((studentObj.quiz_access_until - now) / 1000);
+          const m = Math.floor(leftSec / 60);
+          const s = leftSec % 60;
+          document.getElementById('access-timer-badge').innerText = `Осталось: ${m}:${s < 10 ? '0' : ''}${s}`;
+        } else if (studentObj && studentObj.quiz_access_until > 0 && studentObj.quiz_access_until <= now) {
+          studentObj.quiz_access_until = 0;
+          updateAccessCardStatus(accessStudent);
+        }
       }
     }
 
@@ -532,7 +676,6 @@
       }).join('');
     }
 
-    // Модальное окно кнопки "Изм."
     window.openAssessmentEditModal = function(index) {
       const record = currentRecords[index];
       if (!record) return;
@@ -612,6 +755,21 @@
       const text = document.getElementById('detected-tg-id').innerText;
       navigator.clipboard.writeText(text);
       alert('Ваш ID скопирован: ' + text);
+    }
+
+    function openNotionCategory(cat) {
+      const titles = { intro: 'Стандарты', lab: 'Лаборатория', spirits: 'Спириты', ttk: 'ТТК' };
+      document.getElementById('notion-category-title').innerText = 'Материалы: ' + titles[cat];
+      const container = document.getElementById('notion-links-items');
+      container.innerHTML = `
+        <a href="https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e" target="_blank" class="p-2.5 border-2 border-nbBorder rounded-xl flex items-center justify-between bg-white hover:bg-yellow-50 shadow-brutal-sm brutal-btn block text-black text-decoration-none">
+          <div class="flex items-center gap-2">
+            <span>📄</span>
+            <span class="text-xs font-extrabold">Открыть раздел базы знаний Notion</span>
+          </div>
+          <span class="text-[10px] font-black bg-nbYellow border border-nbBorder px-1.5 py-0.5 rounded uppercase">Открыть</span>
+        </a>
+      `;
     }
 
     function showToast(title, text) {
