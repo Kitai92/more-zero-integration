@@ -120,17 +120,21 @@
 
   <!-- ==================== ЭКРАН: СТАЖЕР ==================== -->
   <div id="view-trainee" class="hidden space-y-4">
-    <nav class="grid grid-cols-4 gap-1.5">
-      <button onclick="setTraineeTab('track')" id="nav-track" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn tab-active">
+    <!-- Навигация стажера: добавлен ТРЕНАЖЕР -->
+    <nav class="grid grid-cols-5 gap-1">
+      <button onclick="setTraineeTab('track')" id="nav-track" class="py-2 text-[11px] font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn tab-active">
         НЕДЕЛИ
       </button>
-      <button onclick="setTraineeTab('materials')" id="nav-materials" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
+      <button onclick="setTraineeTab('materials')" id="nav-materials" class="py-2 text-[11px] font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
         НОУШЕН
       </button>
-      <button onclick="setTraineeTab('quizzes')" id="nav-quizzes" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
-        ОПРОСНИКИ
+      <button onclick="setTraineeTab('quizzes')" id="nav-quizzes" class="py-2 text-[11px] font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
+        ТЕОРИЯ
       </button>
-      <button onclick="setTraineeTab('debts')" id="nav-debts" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
+      <button onclick="setTraineeTab('trainer')" id="nav-trainer" class="py-2 text-[11px] font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
+        🎯 ТРЕНИНГ
+      </button>
+      <button onclick="setTraineeTab('debts')" id="nav-debts" class="py-2 text-[11px] font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
         ХВОСТЫ
       </button>
     </nav>
@@ -199,7 +203,7 @@
       </div>
     </section>
 
-    <!-- Вкладка Опросники: выбор любой несданной темы -->
+    <!-- Вкладка Опросники: официальная сдача ментору -->
     <section id="trainee-tab-quizzes" class="hidden space-y-3">
       <!-- Закрыто ментором -->
       <div id="quiz-locked-view" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-5 shadow-brutal text-center space-y-3">
@@ -208,7 +212,7 @@
         </div>
         <h3 class="text-base font-black uppercase">Опросники заблокированы</h3>
         <p class="text-xs font-bold text-gray-600 leading-relaxed">
-          Теория сдается очно на смене. Попросите ментора открыть вам доступ со своего телефона.
+          Официальная сдача проводится очно на смене. Попросите ментора открыть вам доступ со своего телефона.
         </p>
         <button onclick="checkMyQuizAccess()" class="w-full bg-nbYellow border-2 border-nbBorder font-black py-2.5 rounded-xl shadow-brutal-sm brutal-btn text-xs uppercase">
           🔄 Проверить доступ
@@ -251,6 +255,92 @@
             Перейти к заполнению формы ➔
           </a>
         </div>
+      </div>
+    </section>
+
+    <!-- ВКЛАДКА: АВТОНОМНЫЙ ТРЕНАЖЕР САМОПРОВЕРКИ -->
+    <section id="trainee-tab-trainer" class="hidden space-y-3">
+      <!-- Экран настройки тренировки -->
+      <div id="trainer-setup-card" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal space-y-3">
+        <div class="flex items-center gap-2 border-b-2 border-nbBorder pb-2">
+          <span class="text-2xl">🎯</span>
+          <div>
+            <h3 class="font-black text-sm uppercase leading-tight">Тренажер спиритов</h3>
+            <p class="text-[10px] font-bold text-gray-500">Случайные вопросы из банка знаний More & Zero</p>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-black uppercase block mb-1">Выбери категорию:</label>
+          <select id="trainer-category-select" class="w-full bg-yellow-50 border-2 border-nbBorder rounded-xl p-2 text-xs font-black shadow-brutal-sm">
+            <option value="">Все спириты (микс)</option>
+            <option value="ASM-010">Виски и бурбон</option>
+            <option value="ASM-014">Текила, мескаль и ром</option>
+            <option value="ASM-012">Джин и женевер</option>
+            <option value="ASM-013">Водка и уанпейджеры</option>
+            <option value="ASM-001">Стандарты и ценности</option>
+            <option value="ASM-004">Сервис и правила зала</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-xs font-black uppercase block mb-1">Количество вопросов:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="setTrainerCount(15)" id="btn-count-15" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl tab-active">
+              15 (Спринт)
+            </button>
+            <button type="button" onclick="setTrainerCount(30)" id="btn-count-30" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white">
+              30 (Полный тест)
+            </button>
+          </div>
+        </div>
+
+        <button onclick="startTrainerSession()" class="w-full bg-nbGreen border-2 border-nbBorder py-3 rounded-xl font-black text-xs uppercase shadow-brutal-sm brutal-btn">
+          🚀 Начать тренировку
+        </button>
+      </div>
+
+      <!-- Экран активного вопроса -->
+      <div id="trainer-play-card" class="hidden bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal space-y-3">
+        <div class="flex justify-between items-center text-xs font-black border-b-2 border-nbBorder pb-2">
+          <span id="trainer-progress-text" class="text-gray-600">Вопрос 1 из 15</span>
+          <span id="trainer-score-badge" class="bg-nbYellow border border-nbBorder px-2 py-0.5 rounded text-[10px]">Счет: 0</span>
+        </div>
+
+        <div class="min-h-[60px] flex items-center">
+          <h4 id="trainer-question-text" class="text-xs font-extrabold leading-snug">Текст вопроса...</h4>
+        </div>
+
+        <!-- Варианты ответов -->
+        <div id="trainer-options-container" class="space-y-2"></div>
+
+        <!-- Подсказка / Пояснение -->
+        <div id="trainer-explanation-box" class="hidden p-2.5 rounded-xl border-2 border-nbBorder bg-yellow-50 text-[11px] font-bold">
+          <span class="font-black block uppercase text-[10px] text-gray-600 mb-0.5">Пояснение:</span>
+          <span id="trainer-explanation-text">...</span>
+        </div>
+
+        <button id="trainer-btn-next" onclick="nextTrainerQuestion()" class="hidden w-full bg-nbYellow border-2 border-nbBorder py-2.5 rounded-xl font-black text-xs uppercase shadow-brutal-sm brutal-btn">
+          Следующий вопрос ➔
+        </button>
+      </div>
+
+      <!-- Экран финиша тренировки -->
+      <div id="trainer-finish-card" class="hidden bg-white border-[2.5px] border-nbBorder rounded-2xl p-5 shadow-brutal text-center space-y-3">
+        <div class="w-14 h-14 bg-nbGreen border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm">
+          🏆
+        </div>
+        <h3 class="text-base font-black uppercase">Тренировка завершена!</h3>
+        <div class="bg-yellow-50 border-2 border-dashed border-nbBorder rounded-xl p-3">
+          <span class="text-xs font-bold text-gray-500 block">Твой результат:</span>
+          <span id="trainer-final-score" class="text-2xl font-black text-nbBorder">0 / 15 (0%)</span>
+        </div>
+        <p class="text-xs font-bold text-gray-600" id="trainer-feedback-verdict">
+          Отличная разминка перед очной сдачей ментору!
+        </p>
+        <button onclick="resetTrainer()" class="w-full bg-nbYellow border-2 border-nbBorder py-2.5 rounded-xl font-black text-xs uppercase shadow-brutal-sm brutal-btn">
+          Пройти ещё раз
+        </button>
       </div>
     </section>
 
@@ -433,6 +523,13 @@
     let myQuizAccessUntil = 0;
     let studentsDashboardList = [];
 
+    // Переменные автономного тренажера
+    let trainerTargetCount = 15;
+    let trainerQuestions = [];
+    let trainerCurrentIndex = 0;
+    let trainerCorrectCount = 0;
+    let trainerAnswerLocked = false;
+
     window.onload = function() {
       if (window.Telegram && window.Telegram.WebApp) {
         window.Telegram.WebApp.ready();
@@ -544,7 +641,6 @@
       }
     }
 
-    // Оценка доступности и наполнение селектора несданных опросников
     function evaluateQuizState() {
       const now = Date.now();
       const isOpen = myQuizAccessUntil > now;
@@ -553,7 +649,6 @@
       document.getElementById('quiz-unlocked-view').classList.toggle('hidden', !isOpen);
 
       if (isOpen) {
-        // Фильтруем только те опросники (формы), которые еще НЕ сданы
         const pendingQuizzes = currentRecords.filter(r => 
           (r.status === 'Ожидает' || r.status === 'Хвост') && 
           QUIZ_LINKS_MAP[r.title]
@@ -573,12 +668,10 @@
 
         document.getElementById('quiz-unlocked-link').classList.remove('hidden');
 
-        // Наполняем селектор несданными темами
         selector.innerHTML = pendingQuizzes.map(q => `
           <option value="${q.title}">[Н${q.week_id}] ${q.title} (${q.status})</option>
         `).join('');
 
-        // Активируем первый из доступных
         onSelectTraineeQuiz(pendingQuizzes[0].title);
       }
     }
@@ -622,6 +715,132 @@
       } finally {
         setTimeout(() => document.getElementById('loading-bar').classList.add('hidden'), 300);
       }
+    }
+
+    // ==================== ЛОГИКА АВТОНОМНОГО ТРЕНАЖЕРА ====================
+    function setTrainerCount(count) {
+      trainerTargetCount = count;
+      document.getElementById('btn-count-15').classList.toggle('tab-active', count === 15);
+      document.getElementById('btn-count-15').classList.toggle('bg-white', count !== 15);
+      document.getElementById('btn-count-30').classList.toggle('tab-active', count === 30);
+      document.getElementById('btn-count-30').classList.toggle('bg-white', count !== 30);
+    }
+
+    async function startTrainerSession() {
+      const category = document.getElementById('trainer-category-select').value;
+      document.getElementById('loading-bar').classList.remove('hidden');
+      document.getElementById('loading-text').innerText = 'Генерация вопросов тренажера...';
+
+      try {
+        const response = await fetch(`${API_URL}?action=get_practice_questions&topic=${encodeURIComponent(category)}&count=${trainerTargetCount}`);
+        const data = await response.json();
+
+        if (data.success && data.questions && data.questions.length > 0) {
+          trainerQuestions = data.questions;
+          trainerCurrentIndex = 0;
+          trainerCorrectCount = 0;
+
+          document.getElementById('trainer-setup-card').classList.add('hidden');
+          document.getElementById('trainer-play-card').classList.remove('hidden');
+          document.getElementById('trainer-finish-card').classList.add('hidden');
+
+          renderTrainerQuestion();
+        } else {
+          showToast('Внимание', 'По данной категории вопросы пока готовятся');
+        }
+      } catch (err) {
+        console.error('Ошибка загрузки тренажера:', err);
+        showToast('Ошибка сети', 'Не удалось загрузить вопросы');
+      } finally {
+        document.getElementById('loading-bar').classList.add('hidden');
+      }
+    }
+
+    function renderTrainerQuestion() {
+      trainerAnswerLocked = false;
+      const q = trainerQuestions[trainerCurrentIndex];
+
+      document.getElementById('trainer-progress-text').innerText = `Вопрос ${trainerCurrentIndex + 1} из ${trainerQuestions.length}`;
+      document.getElementById('trainer-score-badge').innerText = `Счет: ${trainerCorrectCount}`;
+      document.getElementById('trainer-question-text').innerText = q.question;
+      document.getElementById('trainer-explanation-box').classList.add('hidden');
+      document.getElementById('trainer-btn-next').classList.add('hidden');
+
+      const optionsBox = document.getElementById('trainer-options-container');
+      optionsBox.innerHTML = q.options.map((opt, i) => `
+        <button type="button" onclick="handleTrainerAnswer(this, '${encodeURIComponent(opt)}')" class="w-full text-left p-2.5 rounded-xl border-2 border-nbBorder bg-white font-bold text-xs shadow-brutal-sm brutal-btn transition-colors">
+          <span class="inline-block w-5 h-5 rounded-md bg-yellow-100 border border-nbBorder text-center font-black mr-2 text-[11px] leading-tight">${String.fromCharCode(65 + i)}</span>
+          ${opt}
+        </button>
+      `).join('');
+    }
+
+    function handleTrainerAnswer(btnElem, encodedSelected) {
+      if (trainerAnswerLocked) return;
+      trainerAnswerLocked = true;
+
+      const selectedOpt = decodeURIComponent(encodedSelected);
+      const q = trainerQuestions[trainerCurrentIndex];
+      const isCorrect = selectedOpt.trim().toLowerCase() === q.correct_answer.trim().toLowerCase();
+
+      const allBtns = document.getElementById('trainer-options-container').querySelectorAll('button');
+
+      allBtns.forEach(btn => {
+        btn.disabled = true;
+        const btnText = btn.innerText.replace(/^[A-D]\s+/, '').trim().toLowerCase();
+        if (btnText === q.correct_answer.trim().toLowerCase()) {
+          btn.classList.remove('bg-white');
+          btn.classList.add('bg-nbGreen');
+        }
+      });
+
+      if (isCorrect) {
+        trainerCorrectCount++;
+        btnElem.classList.remove('bg-white');
+        btnElem.classList.add('bg-nbGreen');
+        document.getElementById('trainer-score-badge').innerText = `Счет: ${trainerCorrectCount}`;
+      } else {
+        btnElem.classList.remove('bg-white');
+        btnElem.classList.add('bg-nbPink', 'text-white');
+      }
+
+      if (q.explanation) {
+        document.getElementById('trainer-explanation-text').innerText = q.explanation;
+        document.getElementById('trainer-explanation-box').classList.remove('hidden');
+      }
+
+      document.getElementById('trainer-btn-next').classList.remove('hidden');
+    }
+
+    function nextTrainerQuestion() {
+      trainerCurrentIndex++;
+      if (trainerCurrentIndex < trainerQuestions.length) {
+        renderTrainerQuestion();
+      } else {
+        showTrainerFinish();
+      }
+    }
+
+    function showTrainerFinish() {
+      document.getElementById('trainer-play-card').classList.add('hidden');
+      document.getElementById('trainer-finish-card').classList.remove('hidden');
+
+      const percent = Math.round((trainerCorrectCount / trainerQuestions.length) * 100);
+      document.getElementById('trainer-final-score').innerText = `${trainerCorrectCount} из ${trainerQuestions.length} (${percent}%)`;
+
+      const verdict = document.getElementById('trainer-feedback-verdict');
+      if (percent >= 80) {
+        verdict.innerText = '🔥 Потрясающий уровень! Ты полностью готов к сдаче теории ментору.';
+      } else if (percent >= 60) {
+        verdict.innerText = '👍 Хорошая база, но стоит повторить пару уанпейджеров перед выходом на смену.';
+      } else {
+        verdict.innerText = '📖 Рекомендуем открыть раздел Ноушен и освежить рецептуры и классификации.';
+      }
+    }
+
+    function resetTrainer() {
+      document.getElementById('trainer-finish-card').classList.add('hidden');
+      document.getElementById('trainer-setup-card').classList.remove('hidden');
     }
 
     async function setupMentorScreen(data) {
@@ -877,7 +1096,7 @@
     }
 
     function setTraineeTab(tab) {
-      ['track', 'materials', 'quizzes', 'debts'].forEach(t => {
+      ['track', 'materials', 'quizzes', 'trainer', 'debts'].forEach(t => {
         document.getElementById('trainee-tab-' + t).classList.toggle('hidden', t !== tab);
         document.getElementById('nav-' + t).classList.toggle('tab-active', t === tab);
       });
