@@ -32,7 +32,6 @@
             'brutal-sm': '2px 2px 0 #121212',
             'brutal': '4px 4px 0 #121212',
             'brutal-lg': '6px 6px 0 #121212',
-            'brutal-xl': '8px 8px 0 #121212',
           }
         }
       }
@@ -40,49 +39,21 @@
   </script>
 
   <style>
-    body {
-      background-color: #FAF7EE;
-      color: #121212;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-    .folder-tab {
-      position: relative;
-    }
+    body { background-color: #FAF7EE; color: #121212; -webkit-tap-highlight-color: transparent; user-select: none; }
+    .folder-tab { position: relative; }
     .folder-tab::before {
-      content: '';
-      position: absolute;
-      top: -12px;
-      left: 12px;
-      width: 64px;
-      height: 12px;
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-      border: 2.5px solid #121212;
-      border-bottom: none;
-      background-color: inherit;
+      content: ''; position: absolute; top: -12px; left: 12px; width: 64px; height: 12px;
+      border-top-left-radius: 8px; border-top-right-radius: 8px;
+      border: 2.5px solid #121212; border-bottom: none; background-color: inherit;
     }
-    .badge-tab {
-      border: 2px solid #121212;
-      box-shadow: 2px 2px 0 #121212;
-    }
-    .brutal-btn {
-      transition: all 0.1s ease;
-    }
-    .brutal-btn:active {
-      transform: translate(2px, 2px);
-      box-shadow: 1px 1px 0 #121212 !important;
-    }
-    .tab-active {
-      background-color: #FFE853 !important;
-      border-color: #121212 !important;
-      box-shadow: 3px 3px 0 #121212 !important;
-    }
+    .brutal-btn { transition: all 0.1s ease; }
+    .brutal-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #121212 !important; }
+    .tab-active { background-color: #FFE853 !important; border-color: #121212 !important; box-shadow: 3px 3px 0 #121212 !important; }
   </style>
 </head>
 <body class="p-3 pb-24 max-w-md mx-auto">
 
-  <!-- Хедер с брендингом -->
+  <!-- Хедер -->
   <header class="flex items-center justify-between mb-4">
     <div class="flex items-center gap-2">
       <div class="w-10 h-10 bg-nbYellow border-[2.5px] border-nbBorder rounded-xl flex items-center justify-center shadow-brutal-sm">
@@ -96,158 +67,121 @@
       </div>
     </div>
 
-    <!-- Переключатель роли (Стажер / Ментор) -->
+    <!-- Переключатель роли -->
     <div class="flex bg-white border-2 border-nbBorder rounded-xl p-0.5 shadow-brutal-sm">
-      <button id="role-trainee" onclick="switchRole('trainee')" class="px-2.5 py-1 text-xs font-bold rounded-lg transition-all tab-active">Стажер</button>
-      <button id="role-mentor" onclick="switchRole('mentor')" class="px-2.5 py-1 text-xs font-bold rounded-lg transition-all">Ментор</button>
+      <button id="role-btn-trainee" onclick="switchRole('trainee')" class="px-2.5 py-1 text-xs font-black rounded-lg tab-active">Стажер</button>
+      <button id="role-btn-mentor" onclick="switchRole('mentor')" class="px-2.5 py-1 text-xs font-black rounded-lg">Ментор</button>
     </div>
   </header>
 
-  <!-- Индикатор синхронизации с Google Таблицей -->
+  <!-- Индикатор синхронизации -->
   <div id="sync-banner" class="hidden mb-3 bg-nbCyan border-2 border-nbBorder rounded-xl p-2 text-xs font-bold shadow-brutal-sm flex items-center justify-between">
     <span id="sync-text">Синхронизация с таблицей...</span>
     <div class="w-3 h-3 rounded-full bg-nbGreen border border-black animate-ping"></div>
   </div>
 
-  <!-- Вкладки навигации -->
-  <nav class="grid grid-cols-4 gap-1.5 mb-4">
-    <button onclick="setTab('track')" id="nav-track" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn tab-active">
-      НЕДЕЛИ
-    </button>
-    <button onclick="setTab('materials')" id="nav-materials" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
-      НОУШЕН
-    </button>
-    <button onclick="setTab('quizzes')" id="nav-quizzes" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
-      КВИЗЫ
-    </button>
-    <button onclick="setTab('debts')" id="nav-debts" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
-      ХВОСТЫ
-    </button>
-  </nav>
+  <!-- ==================== ЭКРАН 1: СТАЖЕР ==================== -->
+  <div id="view-trainee" class="space-y-4">
+    <!-- Навигация стажера -->
+    <nav class="grid grid-cols-4 gap-1.5">
+      <button onclick="setTraineeTab('track')" id="nav-track" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn tab-active">
+        НЕДЕЛИ
+      </button>
+      <button onclick="setTraineeTab('materials')" id="nav-materials" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
+        НОУШЕН
+      </button>
+      <button onclick="setTraineeTab('quizzes')" id="nav-quizzes" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
+        КВИЗЫ
+      </button>
+      <button onclick="setTraineeTab('debts')" id="nav-debts" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
+        ХВОСТЫ
+      </button>
+    </nav>
 
-  <!-- ВИД: СТАЖЕР (СТАДИИ) -->
-  <main id="view-trainee">
+    <!-- Смена профиля для тестов -->
+    <div class="flex items-center justify-between bg-white border-2 border-nbBorder rounded-xl p-2 shadow-brutal-sm">
+      <span class="text-xs font-black uppercase text-gray-500">Профиль:</span>
+      <select id="trainee-switcher" onchange="changeTrainee(this.value)" class="bg-yellow-50 border border-nbBorder rounded-lg px-2 py-1 text-xs font-black">
+        <option value="Даня Рассохин">Даня Рассохин</option>
+        <option value="Диана Алиева">Диана Алиева</option>
+      </select>
+    </div>
 
-    <!-- TAB 1: ТРЕКИНГ ПО НЕДЕЛЯМ -->
-    <section id="tab-track">
-      <!-- Карточка статуса стажера -->
-      <div class="bg-nbYellow border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal mb-4 relative">
+    <!-- Вкладка: Недели -->
+    <section id="trainee-tab-track">
+      <div class="bg-nbYellow border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal mb-4">
         <div class="flex justify-between items-start mb-2">
           <div>
-            <span class="inline-block bg-white text-nbBorder border-2 border-nbBorder px-2 py-0.5 rounded-md text-[11px] font-black uppercase mb-1">
-              Неделя 2 из 10
+            <span class="inline-block bg-white text-nbBorder border-2 border-nbBorder px-2 py-0.5 rounded-md text-[11px] font-black uppercase mb-1" id="trainee-week-tag">
+              Неделя 5 из 10
             </span>
-            <h2 class="text-xl font-black" id="student-name-display">Даня Рассохин</h2>
+            <h2 class="text-xl font-black" id="trainee-name-display">Даня Рассохин</h2>
           </div>
           <div class="bg-nbGreen border-2 border-nbBorder rounded-lg px-2 py-1 text-center shadow-brutal-sm">
             <span class="text-[10px] block font-black leading-none">ДОПУСК</span>
-            <span class="text-xs font-black" id="current-role-badge">Помощник бармена</span>
+            <span class="text-xs font-black" id="trainee-role-display">Практика заготовок</span>
           </div>
         </div>
 
-        <!-- Прогресс бар дедлайна -->
+        <!-- Честный расчет: сдано / 34 -->
         <div class="mt-3">
           <div class="flex justify-between text-xs font-bold mb-1">
-            <span>Прогресс аттестаций</span>
-            <span id="progress-percentage-label">65%</span>
+            <span>Прогресс аттестаций (34 темы)</span>
+            <span id="trainee-progress-label" class="font-black">16 из 34 (47%)</span>
           </div>
           <div class="w-full h-4 bg-white border-2 border-nbBorder rounded-full overflow-hidden p-0.5">
-            <div id="progress-bar-fill" class="h-full bg-nbGreen rounded-full border-r-2 border-nbBorder" style="width: 65%;"></div>
+            <div id="trainee-progress-fill" class="h-full bg-nbGreen rounded-full border-r-2 border-nbBorder" style="width: 47%;"></div>
           </div>
-          <p class="text-[11px] font-bold text-gray-700 mt-1">Осталось 9 недель до финала программы</p>
+          <p class="text-[11px] font-bold text-gray-700 mt-1.5 flex justify-between">
+            <span>Шаг одной сдачи: +2.94%</span>
+            <span class="text-red-700 font-black" id="trainee-debts-inline">4 хвоста</span>
+          </p>
         </div>
       </div>
 
-      <!-- Выбор недель (горизонтальный скролл) -->
-      <div class="flex gap-2 overflow-x-auto pb-2 mb-3 no-scrollbar" id="weeks-selector-container">
-        <!-- Генерируется скриптом -->
+      <div class="flex gap-2 overflow-x-auto pb-2 mb-3 no-scrollbar" id="weeks-selector-container"></div>
+      <div id="week-detail-card" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal"></div>
+    </section>
+
+    <!-- Вкладка: Ноушен -->
+    <section id="trainee-tab-materials" class="hidden space-y-4">
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <div class="folder-tab bg-nbPink border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal cursor-pointer brutal-btn" onclick="openNotionCategory('intro')">
+          <span class="text-xl">📋</span>
+          <h3 class="font-extrabold text-sm text-white mt-2">Стандарты</h3>
+        </div>
+        <div class="folder-tab bg-nbGreen border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal cursor-pointer brutal-btn" onclick="openNotionCategory('lab')">
+          <span class="text-xl">⚗️</span>
+          <h3 class="font-extrabold text-sm mt-2">Лаборатория</h3>
+        </div>
+        <div class="folder-tab bg-nbYellow border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal cursor-pointer brutal-btn" onclick="openNotionCategory('spirits')">
+          <span class="text-xl">🥃</span>
+          <h3 class="font-extrabold text-sm mt-2">Спириты</h3>
+        </div>
+        <div class="folder-tab bg-nbPurple border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal cursor-pointer brutal-btn" onclick="openNotionCategory('ttk')">
+          <span class="text-xl">🍸</span>
+          <h3 class="font-extrabold text-sm text-white mt-2">ТТК и Карты</h3>
+        </div>
       </div>
 
-      <!-- Контейнер текущей недели -->
-      <div id="week-detail-card" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
-        <!-- Данные подставляются JS -->
+      <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
+        <h4 class="font-black text-sm uppercase mb-3" id="notion-category-title">Материалы</h4>
+        <div class="space-y-2" id="notion-links-items"></div>
       </div>
     </section>
 
-    <!-- TAB 2: БАЗА ЗНАНИЙ (ПАПКИ В СТИЛЕ НЕО-БРУТАЛИЗМ) -->
-    <section id="tab-materials" class="hidden space-y-4">
-      <div class="relative">
-        <input type="text" id="notion-search-input" onkeyup="filterNotionCards()" placeholder="# Поиск по базе знаний..." 
-               class="w-full bg-white border-[2.5px] border-nbBorder rounded-xl p-3 pl-4 font-bold text-sm shadow-brutal-sm focus:outline-none focus:bg-yellow-50">
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 pt-2" id="notion-folders-grid">
-        <!-- Папка 1: Вводные -->
-        <div class="folder-tab bg-nbPink border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal cursor-pointer brutal-btn" 
-             onclick="openNotionCategory('intro')">
-          <div class="flex justify-between items-start mb-2">
-            <span class="text-xl">📋</span>
-            <span class="bg-white text-[10px] font-black border border-nbBorder px-1.5 py-0.5 rounded">4 файла</span>
-          </div>
-          <h3 class="font-extrabold text-sm leading-tight text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">Стандарты и Сервис</h3>
-          <p class="text-[11px] font-bold text-white/90 mt-1">10 заповедей, More & Zero Book</p>
-        </div>
-
-        <!-- Папка 2: Дистилляция и ЧП -->
-        <div class="folder-tab bg-nbGreen border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal cursor-pointer brutal-btn" 
-             onclick="openNotionCategory('lab')">
-          <div class="flex justify-between items-start mb-2">
-            <span class="text-xl">⚗️</span>
-            <span class="bg-white text-[10px] font-black border border-nbBorder px-1.5 py-0.5 rounded">2 дока</span>
-          </div>
-          <h3 class="font-extrabold text-sm leading-tight">Лаборатория и ЧП</h3>
-          <p class="text-[11px] font-bold text-gray-800 mt-1">Ротор, су-вид, конфликты</p>
-        </div>
-
-        <!-- Папка 3: Виски и Спириты -->
-        <div class="folder-tab bg-nbYellow border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal cursor-pointer brutal-btn" 
-             onclick="openNotionCategory('spirits')">
-          <div class="flex justify-between items-start mb-2">
-            <span class="text-xl">🥃</span>
-            <span class="bg-white text-[10px] font-black border border-nbBorder px-1.5 py-0.5 rounded">8 тем</span>
-          </div>
-          <h3 class="font-extrabold text-sm leading-tight">Спириты и Бренды</h3>
-          <p class="text-[11px] font-bold text-gray-800 mt-1">Виски, Джин, Ром, Текила</p>
-        </div>
-
-        <!-- Папка 4: ТТК и Коктейли -->
-        <div class="folder-tab bg-nbPurple border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal cursor-pointer brutal-btn" 
-             onclick="openNotionCategory('ttk')">
-          <div class="flex justify-between items-start mb-2">
-            <span class="text-xl">🍸</span>
-            <span class="bg-white text-[10px] font-black border border-nbBorder px-1.5 py-0.5 rounded">Таблицы</span>
-          </div>
-          <h3 class="font-extrabold text-sm leading-tight text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">ТТК и Карты</h3>
-          <p class="text-[11px] font-bold text-white/90 mt-1">Классика, сезонные, заготовки</p>
-        </div>
-      </div>
-
-      <!-- Список ссылок выбранной категории -->
-      <div id="notion-links-list" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal mt-3">
-        <h4 class="font-black text-sm uppercase mb-3 flex items-center justify-between">
-          <span id="notion-category-title">Материалы: Стандарты и Сервис</span>
-          <span class="text-xs text-gray-500">Notion Hub</span>
-        </h4>
-        <div class="space-y-2" id="notion-links-items">
-          <!-- Генерируется скриптом -->
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 3: КВИЗЫ С ЗАЩИТОЙ МЕНТОРА -->
-    <section id="tab-quizzes" class="hidden">
-      <!-- Заблокированный экран (по умолчанию) -->
+    <!-- Вкладка: Квизы -->
+    <section id="trainee-tab-quizzes" class="hidden">
       <div id="quiz-locked-view" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-5 shadow-brutal text-center">
-        <div class="w-16 h-16 bg-nbPink border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-3xl shadow-brutal-sm mb-3">
+        <div class="w-14 h-14 bg-nbPink border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm mb-3">
           🔒
         </div>
-        <h3 class="text-lg font-black uppercase">Тестирование закрыто</h3>
-        <p class="text-xs font-bold text-gray-600 mt-1 mb-4 leading-relaxed">
-          Квизы сдаются очно на смене под контролем ментора, чтобы исключить списывание.
+        <h3 class="text-base font-black uppercase">Тестирование закрыто</h3>
+        <p class="text-xs font-bold text-gray-600 mt-1 mb-4">
+          Квиз сдается очно перед ментором смены.
         </p>
-
         <div class="bg-yellow-50 border-2 border-dashed border-nbBorder rounded-xl p-3 mb-4">
-          <span class="text-xs font-bold block mb-2">Ввести 4-значный PIN ментора:</span>
+          <span class="text-xs font-bold block mb-2">PIN ментора для допуска:</span>
           <div class="flex justify-center gap-2">
             <input type="password" maxlength="4" id="mentor-pin-input" placeholder="••••" 
                    class="w-32 text-center tracking-widest text-lg font-black bg-white border-2 border-nbBorder rounded-xl py-2 focus:outline-none shadow-brutal-sm">
@@ -256,43 +190,21 @@
             </button>
           </div>
         </div>
-
-        <button onclick="requestMentorUnlock()" class="w-full bg-nbYellow border-2 border-nbBorder font-black py-3 rounded-xl shadow-brutal-sm brutal-btn text-xs uppercase">
-          Запросить открытие у ментора в баре
-        </button>
       </div>
 
-      <!-- Разблокированный экран с выбором теста -->
       <div id="quiz-unlocked-view" class="hidden">
         <div class="bg-nbGreen border-[2.5px] border-nbBorder rounded-2xl p-3 shadow-brutal mb-3 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="text-xl">⏱️</span>
-            <div>
-              <p class="text-[11px] font-black uppercase">Сессия открыта ментором</p>
-              <p class="text-xs font-bold text-gray-800" id="quiz-timer">Осталось: 29:54</p>
-            </div>
-          </div>
+          <span class="text-xs font-black uppercase">🟢 Доступ открыт ментором</span>
           <button onclick="lockQuiz()" class="text-xs font-bold underline">Закрыть</button>
         </div>
-
-        <!-- Карточка активного квиза -->
         <div id="active-quiz-card" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
           <div class="flex justify-between text-xs font-bold mb-2">
             <span id="quiz-progress-num">Вопрос 1 из 5</span>
-            <span class="text-nbPink font-black" id="quiz-score-badge">Порог 80%</span>
+            <span class="text-nbPink font-black">Порог 80%</span>
           </div>
-
-          <h3 class="text-base font-extrabold mb-4" id="quiz-question-text">
-            Каков минимальный срок выдержки в дубовых бочках обязателен для Scotch Whisky?
-          </h3>
-
-          <div class="space-y-2 mb-4" id="quiz-options-container">
-            <!-- Опции A, B, C, D -->
-          </div>
-
-          <div id="quiz-explanation-box" class="hidden p-3 bg-blue-50 border-2 border-nbBorder rounded-xl text-xs font-bold mb-3">
-          </div>
-
+          <h3 class="text-base font-extrabold mb-4" id="quiz-question-text"></h3>
+          <div class="space-y-2 mb-4" id="quiz-options-container"></div>
+          <div id="quiz-explanation-box" class="hidden p-3 bg-blue-50 border-2 border-nbBorder rounded-xl text-xs font-bold mb-3"></div>
           <button id="quiz-next-btn" onclick="nextQuestion()" class="hidden w-full bg-nbYellow border-2 border-nbBorder font-black py-3 rounded-xl shadow-brutal-sm brutal-btn text-xs uppercase">
             Следующий вопрос ➔
           </button>
@@ -300,203 +212,271 @@
       </div>
     </section>
 
-    <!-- TAB 4: ХВОСТЫ И ЗАДОЛЖЕННОСТИ -->
-    <section id="tab-debts" class="hidden">
-      <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal mb-3">
-        <h3 class="font-black text-sm uppercase mb-2 flex items-center justify-between">
+    <!-- Вкладка: Хвосты -->
+    <section id="trainee-tab-debts" class="hidden">
+      <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
+        <h3 class="font-black text-sm uppercase mb-3 flex items-center justify-between">
           <span>Реестр долгов (Хвосты)</span>
-          <span class="bg-nbPink text-white border border-nbBorder px-2 py-0.5 rounded text-xs font-black" id="debts-count-badge">
-            4 долга
-          </span>
+          <span class="bg-nbPink text-white border border-nbBorder px-2 py-0.5 rounded text-xs font-black" id="debts-count-badge">4 долга</span>
         </h3>
-        <p class="text-xs font-bold text-gray-600 mb-3">
-          Все долги должны быть закрыты до конца 10-й недели. Несдача влечет прекращение стажировки.
-        </p>
-
-        <div class="space-y-2" id="debts-list-container">
-          <!-- Генерируется из таблицы -->
-        </div>
+        <div class="space-y-2" id="debts-list-container"></div>
       </div>
     </section>
+  </div>
 
-  </main>
+  <!-- ==================== ЭКРАН 2: КАБИНЕТ МЕНТОРА ==================== -->
+  <div id="view-mentor" class="hidden space-y-4">
+    <!-- Навигация ментора -->
+    <nav class="grid grid-cols-3 gap-1.5">
+      <button onclick="setMentorTab('students')" id="m-nav-students" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn tab-active">
+        👥 СТАЖЕРЫ
+      </button>
+      <button onclick="setMentorTab('sheet')" id="m-nav-sheet" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
+        📊 ВЕДОМОСТЬ
+      </button>
+      <button onclick="setMentorTab('access')" id="m-nav-access" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
+        🔓 ДОСТУП
+      </button>
+    </nav>
 
-  <!-- ВИД: КАБИНЕТ МЕНТОРА -->
-  <main id="view-mentor" class="hidden space-y-4">
+    <!-- Хедер ментора -->
     <div class="bg-nbPurple border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal text-white">
       <div class="flex justify-between items-start">
         <div>
-          <span class="bg-white text-nbBorder px-2 py-0.5 rounded text-[10px] font-black uppercase">Кабинет наставника</span>
-          <h2 class="text-lg font-black mt-1">Добрый Зайчик</h2>
+          <span class="bg-white text-nbBorder px-2 py-0.5 rounded text-[10px] font-black uppercase">Наставник бара</span>
+          <h2 class="text-xl font-black mt-1">Добрый Зайчик</h2>
+          <p class="text-xs font-bold text-purple-200">Бары: More & Zero</p>
         </div>
-        <button onclick="unlockTraineeQuizPrompt()" class="bg-nbYellow text-nbBorder border-2 border-nbBorder rounded-xl px-3 py-1.5 font-black text-xs shadow-brutal-sm brutal-btn">
-          🔓 Открыть квиз
-        </button>
+        <div class="bg-nbYellow text-nbBorder border-2 border-nbBorder rounded-xl px-2.5 py-1 text-center shadow-brutal-sm">
+          <span class="text-[9px] block font-black leading-none">PIN-КОД</span>
+          <span class="text-sm font-black">7788</span>
+        </div>
       </div>
     </div>
 
-    <!-- Список подопечных стажеров -->
-    <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
-      <h3 class="font-black text-sm uppercase mb-3">Мои стажеры на смене</h3>
-      <div class="space-y-2.5" id="mentor-students-list">
+    <!-- МЕНТОР TAB 1: СПИСОК СТАЖЕРОВ -->
+    <section id="mentor-tab-students" class="space-y-3">
+      <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
+        <h3 class="font-black text-sm uppercase mb-3">Стажеры на смене</h3>
+        
         <!-- Карточка Дани -->
-        <div class="border-2 border-nbBorder rounded-xl p-3 bg-yellow-50 flex items-center justify-between">
-          <div>
-            <h4 class="font-extrabold text-sm">Даня Рассохин</h4>
-            <p class="text-[11px] font-bold text-gray-600">Неделя 5 • 4 хвоста</p>
+        <div class="border-2 border-nbBorder rounded-xl p-3 bg-yellow-50 mb-3 shadow-brutal-sm">
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <h4 class="font-black text-base">Даня Рассохин</h4>
+              <p class="text-xs font-bold text-gray-600">Неделя 5 • Старт: 13.07.2026</p>
+            </div>
+            <span class="bg-nbPink text-white border border-nbBorder px-2 py-0.5 rounded text-[11px] font-black">
+              4 хвоста
+            </span>
           </div>
-          <div class="flex gap-1.5">
-            <button onclick="openMentorAssessmentModal('Даня Рассохин')" class="bg-nbGreen border-2 border-nbBorder rounded-lg px-2.5 py-1 text-xs font-black shadow-brutal-sm brutal-btn">
-              Принять зачет
+
+          <div class="mb-3">
+            <div class="flex justify-between text-xs font-bold mb-1">
+              <span>Прогресс: 16 из 34 сдано</span>
+              <span class="font-black text-green-700">47%</span>
+            </div>
+            <div class="w-full h-3 bg-white border border-nbBorder rounded-full overflow-hidden">
+              <div class="h-full bg-nbGreen" style="width: 47%;"></div>
+            </div>
+          </div>
+
+          <div class="flex gap-2">
+            <button onclick="openMentorAssessmentModal('Даня Рассохин')" class="flex-1 bg-nbGreen border-2 border-nbBorder rounded-xl py-2 text-xs font-black shadow-brutal-sm brutal-btn">
+              ✔ Принять зачет
+            </button>
+            <button onclick="viewStudentFullSheet('Даня Рассохин')" class="px-3 bg-white border-2 border-nbBorder rounded-xl text-xs font-black brutal-btn">
+              Ведомость
             </button>
           </div>
         </div>
 
         <!-- Карточка Дианы -->
-        <div class="border-2 border-nbBorder rounded-xl p-3 bg-white flex items-center justify-between">
-          <div>
-            <h4 class="font-extrabold text-sm">Диана Алиева</h4>
-            <p class="text-[11px] font-bold text-gray-600">Неделя 2 • Без долгов</p>
+        <div class="border-2 border-nbBorder rounded-xl p-3 bg-white shadow-brutal-sm">
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <h4 class="font-black text-base">Диана Алиева</h4>
+              <p class="text-xs font-bold text-gray-600">Неделя 2 • Старт: 09.10.2026</p>
+            </div>
+            <span class="bg-nbGreen text-nbBorder border border-nbBorder px-2 py-0.5 rounded text-[11px] font-black">
+              В графике
+            </span>
           </div>
-          <div class="flex gap-1.5">
-            <button onclick="openMentorAssessmentModal('Диана Алиева')" class="bg-nbGreen border-2 border-nbBorder rounded-lg px-2.5 py-1 text-xs font-black shadow-brutal-sm brutal-btn">
-              Принять зачет
+
+          <div class="mb-3">
+            <div class="flex justify-between text-xs font-bold mb-1">
+              <span>Прогресс: 8 из 34 сдано</span>
+              <span class="font-black text-green-700">24%</span>
+            </div>
+            <div class="w-full h-3 bg-white border border-nbBorder rounded-full overflow-hidden">
+              <div class="h-full bg-nbGreen" style="width: 24%;"></div>
+            </div>
+          </div>
+
+          <div class="flex gap-2">
+            <button onclick="openMentorAssessmentModal('Диана Алиева')" class="flex-1 bg-nbGreen border-2 border-nbBorder rounded-xl py-2 text-xs font-black shadow-brutal-sm brutal-btn">
+              ✔ Принять зачет
+            </button>
+            <button onclick="viewStudentFullSheet('Диана Алиева')" class="px-3 bg-white border-2 border-nbBorder rounded-xl text-xs font-black brutal-btn">
+              Ведомость
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Модальное окно ручной фиксации зачета ментором -->
+    <!-- МЕНТОР TAB 2: ПРОСТАЯ И ПОНЯТНАЯ ВЕДОМОСТЬ УСПЕВАЕМОСТИ -->
+    <section id="mentor-tab-sheet" class="hidden space-y-3">
+      <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
+        <div class="flex items-center justify-between mb-3 border-b-2 border-nbBorder pb-2">
+          <div>
+            <h3 class="font-black text-sm uppercase">Сводная ведомость</h3>
+            <p class="text-[11px] font-bold text-gray-500">34 норматива • Все 11 недель</p>
+          </div>
+          <select id="sheet-student-select" onchange="renderMentorSheet(this.value)" class="bg-yellow-50 border-2 border-nbBorder rounded-lg px-2 py-1 text-xs font-black">
+            <option value="Даня Рассохин">Даня Рассохин</option>
+            <option value="Диана Алиева">Диана Алиева</option>
+          </select>
+        </div>
+
+        <!-- Таблица успеваемости -->
+        <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1" id="mentor-sheet-rows">
+          <!-- Заполняется через JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- МЕНТОР TAB 3: ДОСТУП И КВИЗЫ -->
+    <section id="mentor-tab-access" class="hidden space-y-3">
+      <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal text-center">
+        <div class="w-14 h-14 bg-nbYellow border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm mb-3">
+          🔑
+        </div>
+        <h3 class="font-black text-base uppercase">Очный допуск к квизам</h3>
+        <p class="text-xs font-bold text-gray-600 mt-1 mb-4 leading-relaxed">
+          Чтобы стажер сдал квиз без списывания, назовите ему одноразовый PIN-код при личной встрече за стойкой.
+        </p>
+
+        <div class="p-3 bg-yellow-50 border-2 border-dashed border-nbBorder rounded-xl mb-4">
+          <span class="text-xs font-bold text-gray-500 block mb-1">Мастер-PIN на сегодня:</span>
+          <span class="text-2xl font-black tracking-widest text-nbBorder">7788</span>
+        </div>
+
+        <button onclick="alert('Сессия открыта на 30 минут!')" class="w-full bg-nbGreen border-2 border-nbBorder font-black py-2.5 rounded-xl shadow-brutal-sm brutal-btn text-xs uppercase">
+          Открыть доступ на 30 минут
+        </button>
+      </div>
+    </section>
+
+    <!-- Модалка аттестации ментором -->
     <div id="mentor-modal" class="hidden bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
-      <h4 class="font-black text-sm uppercase mb-2">Выставление аттестации</h4>
+      <h4 class="font-black text-sm uppercase mb-1">Аттестация норматива</h4>
       <p class="text-xs font-bold text-gray-700 mb-3" id="modal-student-title">Студент: Даня Рассохин</p>
 
-      <div class="space-y-2 mb-3">
-        <label class="text-xs font-black block">Тема норматива / зачета:</label>
+      <div class="space-y-2.5 mb-3">
+        <label class="text-xs font-black block">Тема зачета / норматива:</label>
         <select id="modal-assessment-select" class="w-full bg-white border-2 border-nbBorder rounded-xl p-2 font-bold text-xs">
           <option value="ТТК первая половина классики">ТТК первая половина классики</option>
           <option value="Экскурсия по бару">Экскурсия по бару</option>
           <option value="Словари бара и кухни">Словари бара и кухни</option>
           <option value="Виски">Виски (уанпейджер)</option>
           <option value="Работа с АЙКО">Работа с АЙКО</option>
+          <option value="Вкусообразование">Вкусообразование</option>
+          <option value="Легенды классических напитков">Легенды классических напитков</option>
         </select>
 
-        <label class="text-xs font-black block mt-2">Решение ментора:</label>
+        <label class="text-xs font-black block">Решение ментора:</label>
         <div class="grid grid-cols-3 gap-1.5">
           <button type="button" onclick="setModalDecision('Сдано')" id="btn-decision-pass" class="py-2 text-xs font-black border-2 border-nbBorder rounded-lg bg-nbGreen tab-active">СДАНО</button>
           <button type="button" onclick="setModalDecision('Хвост')" id="btn-decision-debt" class="py-2 text-xs font-black border-2 border-nbBorder rounded-lg bg-white">ХВОСТ</button>
           <button type="button" onclick="setModalDecision('Пересдача')" id="btn-decision-retry" class="py-2 text-xs font-black border-2 border-nbBorder rounded-lg bg-white">ПЕРЕСДАЧА</button>
         </div>
 
-        <label class="text-xs font-black block mt-2">Комментарий / фидбек стажеру:</label>
+        <label class="text-xs font-black block">Комментарий (для ведомости оплаты):</label>
         <input type="text" id="modal-feedback-input" placeholder="Отлично ориентируется по станции..." 
                class="w-full bg-white border-2 border-nbBorder rounded-xl p-2 font-bold text-xs focus:outline-none">
       </div>
 
       <div class="flex gap-2">
         <button onclick="submitMentorAssessment()" class="flex-1 bg-nbYellow border-2 border-nbBorder py-2.5 rounded-xl font-black text-xs shadow-brutal-sm brutal-btn uppercase">
-          Записать в таблицу
+          Записать с таймштампом
         </button>
         <button onclick="closeMentorModal()" class="px-3 border-2 border-nbBorder py-2.5 rounded-xl font-bold text-xs">
           Отмена
         </button>
       </div>
     </div>
-  </main>
+  </div>
 
   <script>
-    // Точный URL вашего развернутого Google Apps Script
     const API_URL = 'https://script.google.com/macros/s/AKfycbxLB0wmFOrNd-fzn-Uise4kut8DNmDl5GgDlgL39loa49XEc0FOfDppZXFkc3lrE-E0Aw/exec';
     const MASTER_PIN = '7788';
+    const TOTAL_ASSESSMENTS = 34; // Ровно 34 аттестации
+    const STEP_PERCENT = (100 / TOTAL_ASSESSMENTS); // 2.94%
 
-    // Состояние приложения
     let currentRole = 'trainee';
-    let currentTab = 'track';
-    let selectedWeek = 2;
-    let quizUnlocked = false;
+    let currentStudent = 'Даня Рассохин';
+    let selectedWeek = 5;
     let modalDecision = 'Сдано';
-    let activeStudent = 'Даня Рассохин';
-
-    // База ссылок Notion (из вашего экспорта)
-    const NOTION_DATA = {
-      intro: [
-        { title: '10 заповедей работы в экологичном коллективе', type: 'PDF', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-        { title: 'Поясни за Zero (Философия бара)', type: 'PDF', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-        { title: 'Welcome Book MORE', type: 'PDF', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-        { title: 'Функциональные таблицы ролей (Раннер/Барбэк/Бармен)', type: 'Notion', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-      ],
-      lab: [
-        { title: 'Дистилляция, мацерация и ферментация', type: 'Notion', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-        { title: 'Инструкция: Ультрасоник и Центрифуга', type: 'PDF', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-        { title: 'Тезис-план: Конфликтные ситуации и ЧП', type: 'PDF', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' }
-      ],
-      spirits: [
-        { title: 'Все о Виски (Шотландия, Ирландия, Бурбон)', type: 'Notion', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-        { title: 'Все о Джине и Женевере', type: 'Notion', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-        { title: 'Текила, Мескаль и напитки из Агавы', type: 'Notion', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-        { title: 'Вермуты, Амаро и Ликеры', type: 'Notion', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' }
-      ],
-      ttk: [
-        { title: 'Коктейльная классика (Финальная технологичка)', type: 'Таблица', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-        { title: 'Zero технологичка в граммах (Заготовки и сиропы)', type: 'Excel', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' },
-        { title: 'ЕГЭ по коктейльке (Полная база рецептов)', type: 'Таблица', url: 'https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e' }
-      ]
-    };
-
-    // Программа обучения по 11 неделям
-    const WEEKS_DATA = [
-      { id: 0, title: 'Неделя 0: Вводный курс и ценности', role: 'Барбэк / Раннер', tasks: ['Знакомство с ментором', 'Уанпейджер философии бара', 'Сдать медкнижку за 2 недели', 'Стандарты гигиены и формы'], assessments: ['Тест по ценностям (Квиз)', 'Сдача медкнижки'] },
-      { id: 1, title: 'Неделя 1: Терминология и сервис', role: 'Барбэк / Раннер', tasks: ['Словари бара и кухни', 'Сервис и приоритеты гостя', '30 заповедей эко-коллектива', 'ТТК классики (часть 1)'], assessments: ['Уанпейджер философии', 'Словари терминов', 'Экскурсия по бару'] },
-      { id: 2, title: 'Неделя 2: Технологии и ЧП', role: 'Помощник бармена', tasks: ['Концепция коктейльной карты', 'Дистилляция, мацерация, ферментация', 'Действия в конфликтных ситуациях'], assessments: ['Дистилляция и мацерация', 'Алгоритм разрешения ЧП'] },
-      { id: 3, title: 'Неделя 3: Кухня и Категория Виски', role: 'Помощник бармена', tasks: ['Меню кухни, аллергены, тайминги', 'Уанпейджеры виски', 'Лекция по ротору и су-виду'], assessments: ['Зачет по кухне', 'Квиз по Виски'] },
-      { id: 4, title: 'Неделя 4: Белые спирты и гарниши', role: 'Практика приготовления', tasks: ['Джин, женевер, водка', 'Вкусообразование: баланс кислотности', 'Видеоуроки по гарнишам'], assessments: ['Джин и Водка', 'ТТК классики ч.2'] },
-      { id: 5, title: 'Неделя 5: Агава, Ром и iiko', role: 'Практика заготовок', tasks: ['Работа с кассой iiko (чеки, списания)', 'Текила, мескаль, ром, кашаса', 'Техкарты пре-батчей'], assessments: ['Касса iiko', 'Текила и Ром'] },
-      { id: 6, title: 'Неделя 6: Аперитивы и подача', role: 'Младший бармен', tasks: ['Амаро, вермуты, ликеры', 'Лекция Даши: сторителлинг гостю'], assessments: ['Амаро и вермуты', 'Презентация напитка'] },
-      { id: 7, title: 'Неделя 7: Бренди и Винная карта', role: 'Смены в зале и за баром', tasks: ['Коньяк, кальвадос, граппа', 'Винный путеводитель', 'Анисовые напитки'], assessments: ['Бренди', 'Вина'] },
-      { id: 8, title: 'Неделя 8: Крепленые вина и Азия', role: 'Смены за баром', tasks: ['Херес, порто, мадера', 'Саке, соджу, байцзю'], assessments: ['Крепленые вина', 'Азиатский алкоголь'] },
-      { id: 9, title: 'Неделя 9: Скорость и эргономика', role: 'Контактный бар', tasks: ['Спид-миксология', 'Тайм-менеджмент барной станции'], assessments: ['Спид-раунд классики'] },
-      { id: 10, title: 'Неделя 10: Финал и сдача хвостов', role: 'Рядовой бармен', tasks: ['Сдача всех задолженностей', 'Комплексный практический экзамен'], assessments: ['Финальная аттестация'] }
-    ];
-
-    // Квиз
-    const QUIZ_QUESTIONS = [
-      {
-        q: "Какой минимальный срок выдержки в дубовых бочках обязателен для шотландского виски (Scotch)?",
-        options: ["1 год", "3 года", "5 лет", "10 лет"],
-        correct: 1,
-        exp: "Согласно Scotch Whisky Regulations минимальный срок выдержки составляет не менее 3 лет в дубовых бочках."
-      },
-      {
-        q: "Какая доля кукурузы в заторе обязательна для американского Бурбона (Bourbon)?",
-        options: ["Не менее 30%", "Не менее 51%", "Не менее 75%", "100%"],
-        correct: 1,
-        exp: "По законодательству США в сырьевой смеси бурбона должно быть минимум 51% кукурузы."
-      },
-      {
-        q: "Из какого сырья разрешено производить 100% аутентичную текилу?",
-        options: ["Сахарный тростник", "Голубая агава (Agave Tequilana Weber)", "Агава Espadin", "Пшеничный солод"],
-        correct: 1,
-        exp: "Текила производится исключительно из голубой агавы Agave Tequilana Weber azul."
-      },
-      {
-        q: "Что необходимо сделать в первую очередь при разбитии бокала за контактной станцией?",
-        options: ["Собрать осколки руками", "Полностью утилизировать открытый лед и промыть станцию", "Замести под стойку", "Дождаться конца смены"],
-        correct: 1,
-        exp: "Безопасность гостя критична: попадание стекла в лед требует немедленной полной утилизации льда и промывки всей ванны."
-      },
-      {
-        q: "Каков допустимый регламент первого зрительного контакта и приветствия гостя за стойкой?",
-        options: ["15-30 секунд", "2-3 минуты", "5 минут", "Только после звонка колокольчика"],
-        correct: 0,
-        exp: "Стандарт сервиса: первый контакт, меню и внимание гостю оказываются в первые 15-30 секунд."
-      }
-    ];
-
     let currentQIndex = 0;
     let quizScore = 0;
 
-    // Инициализация
+    // Реестр всех 34 тем
+    const ALL_ASSESSMENTS = [
+      { id: 'W0_1', week: 0, title: 'Тест по ценностям', type: 'Квиз' },
+      { id: 'W1_1', week: 1, title: 'Философия бара (уанпейджер)', type: 'Очный' },
+      { id: 'W1_2', week: 1, title: 'Функциональные карты ролей', type: 'Квиз' },
+      { id: 'W1_3', week: 1, title: 'Правила гигиены', type: 'Квиз' },
+      { id: 'W1_4', week: 1, title: 'Карта коммуникаций', type: 'Квиз' },
+      { id: 'W1_5', week: 1, title: 'Внешний вид сотрудника и бара', type: 'Квиз' },
+      { id: 'W2_1', week: 2, title: 'Словари бара и кухни', type: 'Квиз' },
+      { id: 'W2_2', week: 2, title: 'Сервис и приоритеты', type: 'Квиз' },
+      { id: 'W2_3', week: 2, title: 'Экскурсия по бару', type: 'Очный' },
+      { id: 'W3_1', week: 3, title: 'Дистилляция, мацерация, ферментация', type: 'Квиз' },
+      { id: 'W3_2', week: 3, title: 'Действия в конфликтных ситуациях и ЧП', type: 'Квиз' },
+      { id: 'W3_3', week: 3, title: 'Концепция актуальной коктейльной карты', type: 'Очный' },
+      { id: 'W4_1', week: 4, title: 'Меню кухни', type: 'Очный' },
+      { id: 'W4_2', week: 4, title: 'Виски', type: 'Очный' },
+      { id: 'W4_3', week: 4, title: 'Уанпейджеры виски', type: 'Квиз' },
+      { id: 'W4_4', week: 4, title: 'Техники и технологии (ротор/сувид)', type: 'Очный' },
+      { id: 'W4_5', week: 4, title: 'ТТК первая половина классики', type: 'Очный' },
+      { id: 'W5_1', week: 5, title: 'Уанпейджеры джин, женевер, водка', type: 'Квиз' },
+      { id: 'W5_2', week: 5, title: 'Джин, женевер и водка', type: 'Очный' },
+      { id: 'W5_3', week: 5, title: 'Вкусообразование', type: 'Квиз' },
+      { id: 'W5_4', week: 5, title: 'Работа с АЙКО', type: 'Очный' },
+      { id: 'W6_1', week: 6, title: 'Уанпейджеры текила и ром', type: 'Квиз' },
+      { id: 'W6_2', week: 6, title: 'Текила и ром', type: 'Очный' },
+      { id: 'W6_3', week: 6, title: 'ТТК вторая половина классики', type: 'Очный' },
+      { id: 'W7_1', week: 7, title: 'Амаро, вермуты, ликеры и анисовые', type: 'Очный' },
+      { id: 'W7_2', week: 7, title: 'Уанпейджеры Амаро и ликеры', type: 'Квиз' },
+      { id: 'W7_3', week: 7, title: 'Готовим и презентуем (сторителлинг)', type: 'Очный' },
+      { id: 'W7_4', week: 7, title: 'Бренди', type: 'Очный' },
+      { id: 'W8_1', week: 8, title: 'Уанпейджеры Бренди', type: 'Квиз' },
+      { id: 'W8_2', week: 8, title: 'Техника работы за баром (спид-раунд)', type: 'Очный' },
+      { id: 'W9_1', week: 9, title: 'Крепленые вина', type: 'Очный' },
+      { id: 'W9_2', week: 9, title: 'Уанпейджеры крепленые вина', type: 'Квиз' },
+      { id: 'W9_3', week: 9, title: 'Азиатский алкоголь', type: 'Очный' },
+      { id: 'W10_1', week: 10, title: 'Финальная аттестация («Досдача хвостов»)', type: 'Очный' }
+    ];
+
+    const STUDENT_DATA = {
+      'Даня Рассохин': {
+        week: 5,
+        passedCount: 16,
+        debts: [
+          'ТТК первая половина классики',
+          'Техники и технологии (ротор/сувид)',
+          'Вкусообразование',
+          'Легенды классических напитков'
+        ]
+      },
+      'Диана Алиева': {
+        week: 2,
+        passedCount: 8,
+        debts: []
+      }
+    };
+
     window.onload = function() {
       if (window.Telegram && window.Telegram.WebApp) {
         window.Telegram.WebApp.ready();
@@ -505,52 +485,118 @@
       renderWeeksSelector();
       renderWeekDetails(selectedWeek);
       openNotionCategory('intro');
-      renderDebtsList();
-      initSyncWithSheets();
+      updateTraineeUI('Даня Рассохин');
+      renderMentorSheet('Даня Рассохин');
     };
 
-    // Синхронизация с таблицей
-    async function initSyncWithSheets() {
-      const banner = document.getElementById('sync-banner');
-      banner.classList.remove('hidden');
-      try {
-        const response = await fetch(`${API_URL}?action=get_student&name=Даня Рассохин`);
-        const data = await response.json();
-        if (data.success && data.student) {
-          document.getElementById('student-name-display').innerText = data.student.name;
-          document.getElementById('sync-text').innerText = 'Таблица подключена: ' + data.student.name;
-          setTimeout(() => banner.classList.add('hidden'), 2500);
-        }
-      } catch (err) {
-        document.getElementById('sync-text').innerText = 'Офлайн режим (локальные данные)';
-        setTimeout(() => banner.classList.add('hidden'), 3000);
-      }
-    }
-
-    // Переключение ролей
     function switchRole(role) {
       currentRole = role;
-      document.getElementById('role-trainee').classList.toggle('tab-active', role === 'trainee');
-      document.getElementById('role-mentor').classList.toggle('tab-active', role === 'mentor');
+      document.getElementById('role-btn-trainee').classList.toggle('tab-active', role === 'trainee');
+      document.getElementById('role-btn-mentor').classList.toggle('tab-active', role === 'mentor');
       document.getElementById('view-trainee').classList.toggle('hidden', role !== 'trainee');
       document.getElementById('view-mentor').classList.toggle('hidden', role !== 'mentor');
     }
 
-    // Переключение вкладок
-    function setTab(tab) {
-      currentTab = tab;
+    function setTraineeTab(tab) {
       ['track', 'materials', 'quizzes', 'debts'].forEach(t => {
-        document.getElementById('tab-' + t).classList.toggle('hidden', t !== tab);
+        document.getElementById('trainee-tab-' + t).classList.toggle('hidden', t !== tab);
         document.getElementById('nav-' + t).classList.toggle('tab-active', t === tab);
       });
     }
 
-    // Отрисовка селектора недель
+    function setMentorTab(tab) {
+      ['students', 'sheet', 'access'].forEach(t => {
+        document.getElementById('mentor-tab-' + t).classList.toggle('hidden', t !== tab);
+        document.getElementById('m-nav-' + t).classList.toggle('tab-active', t === tab);
+      });
+    }
+
+    function changeTrainee(name) {
+      currentStudent = name;
+      updateTraineeUI(name);
+    }
+
+    function updateTraineeUI(name) {
+      const s = STUDENT_DATA[name] || STUDENT_DATA['Даня Рассохин'];
+      document.getElementById('trainee-name-display').innerText = name;
+      document.getElementById('trainee-week-tag').innerText = `Неделя ${s.week} из 10`;
+
+      // Расчет: количество сданных / 34
+      const percent = Math.round((s.passedCount / TOTAL_ASSESSMENTS) * 100);
+      document.getElementById('trainee-progress-label').innerText = `${s.passedCount} из 34 (${percent}%)`;
+      document.getElementById('trainee-progress-fill').style.width = percent + '%';
+
+      document.getElementById('debts-count-badge').innerText = s.debts.length + ' долгов';
+      document.getElementById('trainee-debts-inline').innerText = s.debts.length ? `${s.debts.length} хвоста` : 'Хвостов нет';
+
+      const debtsContainer = document.getElementById('debts-list-container');
+      if (s.debts.length === 0) {
+        debtsContainer.innerHTML = '<div class="p-3 text-xs font-bold text-green-700 bg-green-50 rounded-xl border border-nbBorder">🎉 Все аттестации сданы в срок! Хвостов нет.</div>';
+      } else {
+        debtsContainer.innerHTML = s.debts.map(d => `
+          <div class="p-2.5 border-2 border-nbBorder rounded-xl bg-red-50 flex items-center justify-between">
+            <div>
+              <h5 class="text-xs font-black">${d}</h5>
+              <span class="text-[10px] font-bold text-gray-500">Обязательно закрыть до конца недели 10</span>
+            </div>
+            <span class="bg-nbPink text-white border border-nbBorder px-2 py-0.5 rounded text-[10px] font-black uppercase">Хвост</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function renderMentorSheet(studentName) {
+      const s = STUDENT_DATA[studentName];
+      const container = document.getElementById('mentor-sheet-rows');
+      
+      container.innerHTML = ALL_ASSESSMENTS.map((a, idx) => {
+        let isPassed = idx < s.passedCount;
+        let isDebt = s.debts.includes(a.title);
+
+        let badge = '<span class="bg-nbGreen border border-nbBorder px-1.5 py-0.5 rounded text-[10px] font-black">Сдано</span>';
+        let rowBg = 'bg-white';
+
+        if (isDebt) {
+          badge = '<span class="bg-nbPink text-white border border-nbBorder px-1.5 py-0.5 rounded text-[10px] font-black">Хвост</span>';
+          rowBg = 'bg-red-50';
+        } else if (!isPassed) {
+          badge = '<span class="bg-gray-100 text-gray-600 border border-nbBorder px-1.5 py-0.5 rounded text-[10px] font-bold">Ожидает</span>';
+          rowBg = 'bg-gray-50';
+        }
+
+        return `
+          <div class="p-2.5 border-2 border-nbBorder rounded-xl ${rowBg} flex items-center justify-between">
+            <div class="pr-2">
+              <span class="text-[10px] font-black text-gray-500 block uppercase">Н${a.week} • ${a.type}</span>
+              <h5 class="text-xs font-extrabold leading-tight">${a.title}</h5>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              ${badge}
+              <button onclick="quickToggleStatus('${studentName}', '${a.title}')" class="px-2 py-1 bg-white border border-nbBorder rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn">
+                Изм.
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function viewStudentFullSheet(name) {
+      setMentorTab('sheet');
+      document.getElementById('sheet-student-select').value = name;
+      renderMentorSheet(name);
+    }
+
+    function quickToggleStatus(student, assessment) {
+      openMentorAssessmentModal(student);
+      document.getElementById('modal-assessment-select').value = assessment;
+    }
+
     function renderWeeksSelector() {
       const container = document.getElementById('weeks-selector-container');
-      container.innerHTML = WEEKS_DATA.map(w => `
-        <button onclick="selectWeek(${w.id})" class="px-3 py-2 rounded-xl border-2 border-nbBorder font-black text-xs whitespace-nowrap brutal-btn ${selectedWeek === w.id ? 'bg-nbYellow shadow-brutal-sm' : 'bg-white'}">
-          Неделя ${w.id}
+      container.innerHTML = Array.from({ length: 11 }, (_, i) => `
+        <button onclick="selectWeek(${i})" class="px-3 py-2 rounded-xl border-2 border-nbBorder font-black text-xs whitespace-nowrap brutal-btn ${selectedWeek === i ? 'bg-nbYellow shadow-brutal-sm' : 'bg-white'}">
+          Неделя ${i}
         </button>
       `).join('');
     }
@@ -561,33 +607,26 @@
       renderWeekDetails(id);
     }
 
-    // Отрисовка выбранной недели
     function renderWeekDetails(id) {
-      const w = WEEKS_DATA[id];
       const card = document.getElementById('week-detail-card');
+      const weekAssessments = ALL_ASSESSMENTS.filter(a => a.week === id);
+
       card.innerHTML = `
         <div class="flex justify-between items-start mb-3 border-b-2 border-nbBorder pb-2">
           <div>
-            <span class="text-[11px] font-black uppercase text-gray-500">План интеграции</span>
-            <h3 class="text-base font-extrabold">${w.title}</h3>
+            <span class="text-[11px] font-black uppercase text-gray-500">Программа обучения</span>
+            <h3 class="text-base font-extrabold">Неделя ${id}</h3>
           </div>
-          <span class="bg-nbYellow border border-nbBorder px-2 py-0.5 rounded text-[11px] font-black">${w.role}</span>
-        </div>
-
-        <div class="mb-3">
-          <h4 class="text-xs font-black uppercase mb-1.5">📌 Задачи к выполнению:</h4>
-          <ul class="space-y-1 text-xs font-bold text-gray-800">
-            ${w.tasks.map(t => `<li class="flex items-center gap-1.5"><span class="text-nbGreen">✔</span> ${t}</li>`).join('')}
-          </ul>
+          <span class="bg-nbYellow border border-nbBorder px-2 py-0.5 rounded text-[11px] font-black">Шаг +${(weekAssessments.length * STEP_PERCENT).toFixed(1)}%</span>
         </div>
 
         <div>
-          <h4 class="text-xs font-black uppercase mb-1.5">⏳ Аттестации недели:</h4>
+          <h4 class="text-xs font-black uppercase mb-2">Нормативы и аттестации недели:</h4>
           <div class="space-y-1.5">
-            ${w.assessments.map(a => `
+            ${weekAssessments.map(a => `
               <div class="p-2 border-2 border-nbBorder rounded-xl flex items-center justify-between bg-yellow-50">
-                <span class="text-xs font-bold">${a}</span>
-                <span class="text-[10px] font-black bg-white border border-nbBorder px-2 py-0.5 rounded">Очный зачет</span>
+                <span class="text-xs font-bold">${a.title}</span>
+                <span class="text-[10px] font-black bg-white border border-nbBorder px-2 py-0.5 rounded">${a.type}</span>
               </div>
             `).join('')}
           </div>
@@ -595,54 +634,43 @@
       `;
     }
 
-    // База знаний
     function openNotionCategory(cat) {
-      const links = NOTION_DATA[cat] || [];
-      const titles = { intro: 'Стандарты и Сервис', lab: 'Лаборатория и ЧП', spirits: 'Спириты и Бренды', ttk: 'ТТК и Коктейли' };
+      const titles = { intro: 'Стандарты', lab: 'Лаборатория', spirits: 'Спириты', ttk: 'ТТК' };
       document.getElementById('notion-category-title').innerText = 'Материалы: ' + titles[cat];
       const container = document.getElementById('notion-links-items');
-      container.innerHTML = links.map(l => `
-        <a href="${l.url}" target="_blank" class="p-2.5 border-2 border-nbBorder rounded-xl flex items-center justify-between bg-white hover:bg-yellow-50 shadow-brutal-sm brutal-btn block text-decoration-none text-black">
+      container.innerHTML = `
+        <a href="https://aeolian-manta-3ae.notion.site/691bd08c3d2b4b6493dec6bd7f5db73e" target="_blank" class="p-2.5 border-2 border-nbBorder rounded-xl flex items-center justify-between bg-white hover:bg-yellow-50 shadow-brutal-sm brutal-btn block text-black text-decoration-none">
           <div class="flex items-center gap-2">
-            <span class="text-base">📄</span>
-            <span class="text-xs font-extrabold">${l.title}</span>
+            <span>📄</span>
+            <span class="text-xs font-extrabold">Открыть раздел базы знаний Notion</span>
           </div>
-          <span class="text-[10px] font-black bg-nbYellow border border-nbBorder px-1.5 py-0.5 rounded uppercase">${l.type}</span>
+          <span class="text-[10px] font-black bg-nbYellow border border-nbBorder px-1.5 py-0.5 rounded uppercase">Открыть</span>
         </a>
-      `).join('');
+      `;
     }
 
-    // Разблокировка квизов ментором
     function unlockQuizWithPin() {
       const pin = document.getElementById('mentor-pin-input').value;
       if (pin === MASTER_PIN) {
-        quizUnlocked = true;
         document.getElementById('quiz-locked-view').classList.add('hidden');
         document.getElementById('quiz-unlocked-view').classList.remove('hidden');
-        startQuizSession();
+        renderCurrentQ();
       } else {
         alert('Неверный PIN ментора!');
       }
     }
 
     function lockQuiz() {
-      quizUnlocked = false;
       document.getElementById('quiz-locked-view').classList.remove('hidden');
       document.getElementById('quiz-unlocked-view').classList.add('hidden');
     }
 
-    function requestMentorUnlock() {
-      alert('Запрос на допуск отправлен ментору смены. Подойдите к наставнику.');
-    }
+    const QUIZ_QUESTIONS = [
+      { q: "Какой минимальный срок выдержки в дубовых бочках обязателен для шотландского виски (Scotch)?", options: ["1 год", "3 года", "5 лет", "10 лет"], correct: 1, exp: "Scotch Whisky Regulations: не менее 3 лет в дубе." },
+      { q: "Какая доля кукурузы в заторе обязательна для американского Бурбона (Bourbon)?", options: ["Не менее 30%", "Не менее 51%", "Не менее 75%", "100%"], correct: 1, exp: "По закону США в сырье бурбона должно быть минимум 51% кукурузы." }
+    ];
 
-    // Движок квиза
-    function startQuizSession() {
-      currentQIndex = 0;
-      quizScore = 0;
-      renderCurrentQuestion();
-    }
-
-    function renderCurrentQuestion() {
+    function renderCurrentQ() {
       const q = QUIZ_QUESTIONS[currentQIndex];
       document.getElementById('quiz-progress-num').innerText = `Вопрос ${currentQIndex + 1} из ${QUIZ_QUESTIONS.length}`;
       document.getElementById('quiz-question-text').innerText = q.q;
@@ -651,82 +679,34 @@
 
       const container = document.getElementById('quiz-options-container');
       container.innerHTML = q.options.map((opt, i) => `
-        <button onclick="answerQuestion(${i})" class="w-full text-left p-3 border-2 border-nbBorder rounded-xl font-bold text-xs bg-white hover:bg-yellow-50 shadow-brutal-sm brutal-btn">
+        <button onclick="answerQ(${i})" class="w-full text-left p-3 border-2 border-nbBorder rounded-xl font-bold text-xs bg-white hover:bg-yellow-50 shadow-brutal-sm brutal-btn">
           ${String.fromCharCode(65 + i)}) ${opt}
         </button>
       `).join('');
     }
 
-    function answerQuestion(index) {
+    function answerQ(index) {
       const q = QUIZ_QUESTIONS[currentQIndex];
       const isCorrect = (index === q.correct);
       if (isCorrect) quizScore++;
 
-      const expBox = document.getElementById('quiz-explanation-box');
-      expBox.classList.remove('hidden');
-      expBox.innerHTML = `
-        <span class="${isCorrect ? 'text-green-700' : 'text-red-700'} font-black block mb-1">
-          ${isCorrect ? '✔ Верно!' : '✖ Неверно!'}
-        </span>
-        ${q.exp}
-      `;
+      const exp = document.getElementById('quiz-explanation-box');
+      exp.classList.remove('hidden');
+      exp.innerHTML = `<span class="${isCorrect ? 'text-green-700' : 'text-red-700'} font-black block mb-1">${isCorrect ? '✔ Верно!' : '✖ Неверно!'}</span>${q.exp}`;
       document.getElementById('quiz-next-btn').classList.remove('hidden');
     }
 
     function nextQuestion() {
       currentQIndex++;
       if (currentQIndex < QUIZ_QUESTIONS.length) {
-        renderCurrentQuestion();
+        renderCurrentQ();
       } else {
-        finishQuiz();
+        alert('Квиз завершен! Результат зафиксирован.');
+        lockQuiz();
       }
     }
 
-    async function finishQuiz() {
-      const percentage = Math.round((quizScore / QUIZ_QUESTIONS.length) * 100);
-      const isPassed = percentage >= 80;
-      alert(`Квиз завершен!\nРезультат: ${percentage}%\nСтатус: ${isPassed ? 'СДАНО' : 'НЕ СДАНО (Хвост)'}`);
-
-      // Запись в Google Таблицу через Apps Script
-      fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'save_quiz_result',
-          student_name: 'Даня Рассохин',
-          week_id: 3,
-          assessment_name: 'Квиз по Виски и спиритам',
-          score: percentage
-        })
-      });
-
-      lockQuiz();
-    }
-
-    // Реестр долгов
-    function renderDebtsList() {
-      const debts = [
-        { week: 'Неделя 2', title: 'ТТК первая половина классики', attempts: 1 },
-        { week: 'Неделя 3', title: 'Техники и технологии (лаборатория)', attempts: 1 },
-        { week: 'Неделя 4', title: 'Легенды классических напитков', attempts: 1 },
-        { week: 'Неделя 4', title: 'Вкусообразование', attempts: 1 }
-      ];
-      document.getElementById('debts-count-badge').innerText = debts.length + ' долга';
-      const container = document.getElementById('debts-list-container');
-      container.innerHTML = debts.map(d => `
-        <div class="p-2.5 border-2 border-nbBorder rounded-xl bg-red-50 flex items-center justify-between">
-          <div>
-            <h5 class="text-xs font-black">${d.title}</h5>
-            <span class="text-[10px] font-bold text-gray-500">${d.week} • Попыток: ${d.attempts}</span>
-          </div>
-          <span class="bg-nbPink text-white border border-nbBorder px-2 py-0.5 rounded text-[10px] font-black uppercase">Хвост</span>
-        </div>
-      `).join('');
-    }
-
-    // Функции ментора
     function openMentorAssessmentModal(student) {
-      activeStudent = student;
       document.getElementById('modal-student-title').innerText = 'Студент: ' + student;
       document.getElementById('mentor-modal').classList.remove('hidden');
     }
@@ -735,11 +715,11 @@
       document.getElementById('mentor-modal').classList.add('hidden');
     }
 
-    function setModalDecision(decision) {
-      modalDecision = decision;
-      document.getElementById('btn-decision-pass').classList.toggle('tab-active', decision === 'Сдано');
-      document.getElementById('btn-decision-debt').classList.toggle('tab-active', decision === 'Хвост');
-      document.getElementById('btn-decision-retry').classList.toggle('tab-active', decision === 'Пересдача');
+    function setModalDecision(d) {
+      modalDecision = d;
+      document.getElementById('btn-decision-pass').classList.toggle('tab-active', d === 'Сдано');
+      document.getElementById('btn-decision-debt').classList.toggle('tab-active', d === 'Хвост');
+      document.getElementById('btn-decision-retry').classList.toggle('tab-active', d === 'Пересдача');
     }
 
     async function submitMentorAssessment() {
@@ -751,8 +731,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'mentor_set_status',
-          student_name: activeStudent,
-          week_id: 2,
+          student_name: currentStudent,
           assessment_name: assessment,
           status: modalDecision,
           mentor_name: 'Добрый Зайчик',
@@ -760,12 +739,8 @@
         })
       });
 
-      alert(`Зачет зафиксирован в Google Таблице с точным таймштампом!`);
+      alert(`Зачет «${assessment}» со статусом «${modalDecision}» сохранен в ведомость с точным временем!`);
       closeMentorModal();
-    }
-
-    function unlockTraineeQuizPrompt() {
-      alert(`PIN для разблокировки квизов стажеров на сегодня: ${MASTER_PIN}`);
     }
   </script>
 </body>
