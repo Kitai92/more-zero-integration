@@ -49,9 +49,31 @@
     .brutal-btn { transition: all 0.1s ease; }
     .brutal-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #121212 !important; }
     .tab-active { background-color: #FFE853 !important; border-color: #121212 !important; box-shadow: 3px 3px 0 #121212 !important; }
+    
+    /* Анимация всплывающего Toast-уведомления */
+    #toast-msg {
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
+      transform: translateY(100px);
+      opacity: 0;
+    }
+    #toast-msg.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
   </style>
 </head>
-<body class="p-3 pb-24 max-w-md mx-auto">
+<body class="p-3 pb-28 max-w-md mx-auto relative">
+
+  <!-- Всплывающий Toast об успешном действии -->
+  <div id="toast-msg" class="fixed bottom-6 left-4 right-4 max-w-sm mx-auto z-50 bg-nbGreen border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal flex items-center gap-3 pointer-events-none">
+    <div class="w-8 h-8 rounded-xl bg-white border-2 border-nbBorder flex items-center justify-center font-black text-base shrink-0">
+      ✔
+    </div>
+    <div>
+      <h5 class="font-black text-xs uppercase leading-tight" id="toast-title">Успешно!</h5>
+      <p class="text-[11px] font-bold text-gray-800" id="toast-text">Данные записаны в таблицу</p>
+    </div>
+  </div>
 
   <!-- Хедер -->
   <header class="flex items-center justify-between mb-4">
@@ -74,15 +96,8 @@
     </div>
   </header>
 
-  <!-- Индикатор синхронизации -->
-  <div id="sync-banner" class="hidden mb-3 bg-nbCyan border-2 border-nbBorder rounded-xl p-2 text-xs font-bold shadow-brutal-sm flex items-center justify-between">
-    <span id="sync-text">Синхронизация с таблицей...</span>
-    <div class="w-3 h-3 rounded-full bg-nbGreen border border-black animate-ping"></div>
-  </div>
-
   <!-- ==================== ЭКРАН 1: СТАЖЕР ==================== -->
   <div id="view-trainee" class="space-y-4">
-    <!-- Навигация стажера -->
     <nav class="grid grid-cols-4 gap-1.5">
       <button onclick="setTraineeTab('track')" id="nav-track" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn tab-active">
         НЕДЕЛИ
@@ -98,16 +113,16 @@
       </button>
     </nav>
 
-    <!-- Смена профиля для тестов -->
+    <!-- Смена профиля -->
     <div class="flex items-center justify-between bg-white border-2 border-nbBorder rounded-xl p-2 shadow-brutal-sm">
-      <span class="text-xs font-black uppercase text-gray-500">Профиль:</span>
+      <span class="text-xs font-black uppercase text-gray-500">Стажер:</span>
       <select id="trainee-switcher" onchange="changeTrainee(this.value)" class="bg-yellow-50 border border-nbBorder rounded-lg px-2 py-1 text-xs font-black">
         <option value="Даня Рассохин">Даня Рассохин</option>
         <option value="Диана Алиева">Диана Алиева</option>
       </select>
     </div>
 
-    <!-- Вкладка: Недели -->
+    <!-- Вкладка Недели -->
     <section id="trainee-tab-track">
       <div class="bg-nbYellow border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal mb-4">
         <div class="flex justify-between items-start mb-2">
@@ -123,7 +138,6 @@
           </div>
         </div>
 
-        <!-- Честный расчет: сдано / 34 -->
         <div class="mt-3">
           <div class="flex justify-between text-xs font-bold mb-1">
             <span>Прогресс аттестаций (34 темы)</span>
@@ -143,7 +157,7 @@
       <div id="week-detail-card" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal"></div>
     </section>
 
-    <!-- Вкладка: Ноушен -->
+    <!-- Вкладка Ноушен -->
     <section id="trainee-tab-materials" class="hidden space-y-4">
       <div class="grid grid-cols-2 gap-3 pt-2">
         <div class="folder-tab bg-nbPink border-[2.5px] border-nbBorder rounded-2xl p-3.5 shadow-brutal cursor-pointer brutal-btn" onclick="openNotionCategory('intro')">
@@ -170,7 +184,7 @@
       </div>
     </section>
 
-    <!-- Вкладка: Квизы -->
+    <!-- Вкладка Квизы -->
     <section id="trainee-tab-quizzes" class="hidden">
       <div id="quiz-locked-view" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-5 shadow-brutal text-center">
         <div class="w-14 h-14 bg-nbPink border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm mb-3">
@@ -212,7 +226,7 @@
       </div>
     </section>
 
-    <!-- Вкладка: Хвосты -->
+    <!-- Вкладка Хвосты -->
     <section id="trainee-tab-debts" class="hidden">
       <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
         <h3 class="font-black text-sm uppercase mb-3 flex items-center justify-between">
@@ -226,7 +240,6 @@
 
   <!-- ==================== ЭКРАН 2: КАБИНЕТ МЕНТОРА ==================== -->
   <div id="view-mentor" class="hidden space-y-4">
-    <!-- Навигация ментора -->
     <nav class="grid grid-cols-3 gap-1.5">
       <button onclick="setMentorTab('students')" id="m-nav-students" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn tab-active">
         👥 СТАЖЕРЫ
@@ -254,7 +267,7 @@
       </div>
     </div>
 
-    <!-- МЕНТОР TAB 1: СПИСОК СТАЖЕРОВ -->
+    <!-- МЕНТОР 1: СПИСОК СТАЖЕРОВ -->
     <section id="mentor-tab-students" class="space-y-3">
       <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
         <h3 class="font-black text-sm uppercase mb-3">Стажеры на смене</h3>
@@ -325,7 +338,7 @@
       </div>
     </section>
 
-    <!-- МЕНТОР TAB 2: ПРОСТАЯ И ПОНЯТНАЯ ВЕДОМОСТЬ УСПЕВАЕМОСТИ -->
+    <!-- МЕНТОР 2: СВОДНАЯ ВЕДОМОСТЬ -->
     <section id="mentor-tab-sheet" class="hidden space-y-3">
       <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
         <div class="flex items-center justify-between mb-3 border-b-2 border-nbBorder pb-2">
@@ -339,14 +352,11 @@
           </select>
         </div>
 
-        <!-- Таблица успеваемости -->
-        <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1" id="mentor-sheet-rows">
-          <!-- Заполняется через JS -->
-        </div>
+        <div class="space-y-2 max-h-[520px] overflow-y-auto pr-1" id="mentor-sheet-rows"></div>
       </div>
     </section>
 
-    <!-- МЕНТОР TAB 3: ДОСТУП И КВИЗЫ -->
+    <!-- МЕНТОР 3: ДОСТУП И КВИЗЫ -->
     <section id="mentor-tab-access" class="hidden space-y-3">
       <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal text-center">
         <div class="w-14 h-14 bg-nbYellow border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm mb-3">
@@ -354,7 +364,7 @@
         </div>
         <h3 class="font-black text-base uppercase">Очный допуск к квизам</h3>
         <p class="text-xs font-bold text-gray-600 mt-1 mb-4 leading-relaxed">
-          Чтобы стажер сдал квиз без списывания, назовите ему одноразовый PIN-код при личной встрече за стойкой.
+          Назовите стажеру одноразовый PIN-код при встрече за стойкой бара.
         </p>
 
         <div class="p-3 bg-yellow-50 border-2 border-dashed border-nbBorder rounded-xl mb-4">
@@ -362,7 +372,7 @@
           <span class="text-2xl font-black tracking-widest text-nbBorder">7788</span>
         </div>
 
-        <button onclick="alert('Сессия открыта на 30 минут!')" class="w-full bg-nbGreen border-2 border-nbBorder font-black py-2.5 rounded-xl shadow-brutal-sm brutal-btn text-xs uppercase">
+        <button onclick="showToast('Доступ открыт', 'Квизы разблокированы на 30 минут')" class="w-full bg-nbGreen border-2 border-nbBorder font-black py-2.5 rounded-xl shadow-brutal-sm brutal-btn text-xs uppercase">
           Открыть доступ на 30 минут
         </button>
       </div>
@@ -370,19 +380,18 @@
 
     <!-- Модалка аттестации ментором -->
     <div id="mentor-modal" class="hidden bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
-      <h4 class="font-black text-sm uppercase mb-1">Аттестация норматива</h4>
-      <p class="text-xs font-bold text-gray-700 mb-3" id="modal-student-title">Студент: Даня Рассохин</p>
+      <div class="flex justify-between items-start mb-2 border-b-2 border-nbBorder pb-2">
+        <div>
+          <h4 class="font-black text-sm uppercase">Аттестация норматива</h4>
+          <p class="text-xs font-bold text-gray-600" id="modal-student-title">Студент: Даня Рассохин</p>
+        </div>
+        <button onclick="closeMentorModal()" class="text-xs font-black border border-nbBorder px-2 py-0.5 rounded bg-gray-100">✕</button>
+      </div>
 
       <div class="space-y-2.5 mb-3">
         <label class="text-xs font-black block">Тема зачета / норматива:</label>
         <select id="modal-assessment-select" class="w-full bg-white border-2 border-nbBorder rounded-xl p-2 font-bold text-xs">
-          <option value="ТТК первая половина классики">ТТК первая половина классики</option>
-          <option value="Экскурсия по бару">Экскурсия по бару</option>
-          <option value="Словари бара и кухни">Словари бара и кухни</option>
-          <option value="Виски">Виски (уанпейджер)</option>
-          <option value="Работа с АЙКО">Работа с АЙКО</option>
-          <option value="Вкусообразование">Вкусообразование</option>
-          <option value="Легенды классических напитков">Легенды классических напитков</option>
+          <!-- Генерируется из всех 34 тем -->
         </select>
 
         <label class="text-xs font-black block">Решение ментора:</label>
@@ -398,8 +407,8 @@
       </div>
 
       <div class="flex gap-2">
-        <button onclick="submitMentorAssessment()" class="flex-1 bg-nbYellow border-2 border-nbBorder py-2.5 rounded-xl font-black text-xs shadow-brutal-sm brutal-btn uppercase">
-          Записать с таймштампом
+        <button id="btn-save-assessment" onclick="submitMentorAssessment()" class="flex-1 bg-nbYellow border-2 border-nbBorder py-2.5 rounded-xl font-black text-xs shadow-brutal-sm brutal-btn uppercase flex items-center justify-center gap-2">
+          <span>Записать с таймштампом</span>
         </button>
         <button onclick="closeMentorModal()" class="px-3 border-2 border-nbBorder py-2.5 rounded-xl font-bold text-xs">
           Отмена
@@ -411,8 +420,8 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbxLB0wmFOrNd-fzn-Uise4kut8DNmDl5GgDlgL39loa49XEc0FOfDppZXFkc3lrE-E0Aw/exec';
     const MASTER_PIN = '7788';
-    const TOTAL_ASSESSMENTS = 34; // Ровно 34 аттестации
-    const STEP_PERCENT = (100 / TOTAL_ASSESSMENTS); // 2.94%
+    const TOTAL_ASSESSMENTS = 34;
+    const STEP_PERCENT = (100 / TOTAL_ASSESSMENTS);
 
     let currentRole = 'trainee';
     let currentStudent = 'Даня Рассохин';
@@ -421,7 +430,6 @@
     let currentQIndex = 0;
     let quizScore = 0;
 
-    // Реестр всех 34 тем
     const ALL_ASSESSMENTS = [
       { id: 'W0_1', week: 0, title: 'Тест по ценностям', type: 'Квиз' },
       { id: 'W1_1', week: 1, title: 'Философия бара (уанпейджер)', type: 'Очный' },
@@ -462,17 +470,22 @@
     const STUDENT_DATA = {
       'Даня Рассохин': {
         week: 5,
-        passedCount: 16,
+        passedList: [
+          'Тест по ценностям', 'Философия бара (уанпейджер)', 'Функциональные карты ролей', 'Правила гигиены',
+          'Карта коммуникаций', 'Внешний вид сотрудника и бара', 'Словари бара и кухни', 'Сервис и приоритеты',
+          'Экскурсия по бару', 'Дистилляция, мацерация, ферментация', 'Действия в конфликтных ситуациях и ЧП',
+          'Концепция актуальной коктейльной карты', 'Меню кухни', 'Виски', 'Уанпейджеры виски', 'Уанпейджеры джин, женевер, водка'
+        ],
         debts: [
-          'ТТК первая половина классики',
-          'Техники и технологии (ротор/сувид)',
-          'Вкусообразование',
-          'Легенды классических напитков'
+          'ТТК первая половина классики', 'Техники и технологии (ротор/сувид)', 'Вкусообразование', 'Легенды классических напитков'
         ]
       },
       'Диана Алиева': {
         week: 2,
-        passedCount: 8,
+        passedList: [
+          'Тест по ценностям', 'Философия бара (уанпейджер)', 'Функциональные карты ролей', 'Правила гигиены',
+          'Карта коммуникаций', 'Внешний вид сотрудника и бара', 'Словари бара и кухни', 'Сервис и приоритеты'
+        ],
         debts: []
       }
     };
@@ -482,12 +495,37 @@
         window.Telegram.WebApp.ready();
         window.Telegram.WebApp.expand();
       }
+      populateAssessmentSelect();
       renderWeeksSelector();
       renderWeekDetails(selectedWeek);
       openNotionCategory('intro');
       updateTraineeUI('Даня Рассохин');
       renderMentorSheet('Даня Рассохин');
     };
+
+    // Наполнение выпадающего списка 34 тем
+    function populateAssessmentSelect() {
+      const select = document.getElementById('modal-assessment-select');
+      select.innerHTML = ALL_ASSESSMENTS.map(a => `
+        <option value="${a.title}">[Нед. ${a.week}] ${a.title} (${a.type})</option>
+      `).join('');
+    }
+
+    // Всплывающее уведомление (Toast)
+    function showToast(title, text) {
+      const toast = document.getElementById('toast-msg');
+      document.getElementById('toast-title').innerText = title;
+      document.getElementById('toast-text').innerText = text;
+      toast.classList.add('show');
+
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+      }
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
 
     function switchRole(role) {
       currentRole = role;
@@ -521,9 +559,9 @@
       document.getElementById('trainee-name-display').innerText = name;
       document.getElementById('trainee-week-tag').innerText = `Неделя ${s.week} из 10`;
 
-      // Расчет: количество сданных / 34
-      const percent = Math.round((s.passedCount / TOTAL_ASSESSMENTS) * 100);
-      document.getElementById('trainee-progress-label').innerText = `${s.passedCount} из 34 (${percent}%)`;
+      const passedCount = s.passedList.length;
+      const percent = Math.round((passedCount / TOTAL_ASSESSMENTS) * 100);
+      document.getElementById('trainee-progress-label').innerText = `${passedCount} из 34 (${percent}%)`;
       document.getElementById('trainee-progress-fill').style.width = percent + '%';
 
       document.getElementById('debts-count-badge').innerText = s.debts.length + ' долгов';
@@ -549,8 +587,8 @@
       const s = STUDENT_DATA[studentName];
       const container = document.getElementById('mentor-sheet-rows');
       
-      container.innerHTML = ALL_ASSESSMENTS.map((a, idx) => {
-        let isPassed = idx < s.passedCount;
+      container.innerHTML = ALL_ASSESSMENTS.map(a => {
+        let isPassed = s.passedList.includes(a.title);
         let isDebt = s.debts.includes(a.title);
 
         let badge = '<span class="bg-nbGreen border border-nbBorder px-1.5 py-0.5 rounded text-[10px] font-black">Сдано</span>';
@@ -565,13 +603,13 @@
         }
 
         return `
-          <div class="p-2.5 border-2 border-nbBorder rounded-xl ${rowBg} flex items-center justify-between">
+          <div class="p-2.5 border-2 border-nbBorder rounded-xl ${rowBg} flex items-center justify-between transition-all" id="row-${a.id}">
             <div class="pr-2">
               <span class="text-[10px] font-black text-gray-500 block uppercase">Н${a.week} • ${a.type}</span>
               <h5 class="text-xs font-extrabold leading-tight">${a.title}</h5>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
-              ${badge}
+              <span id="badge-${a.id}">${badge}</span>
               <button onclick="quickToggleStatus('${studentName}', '${a.title}')" class="px-2 py-1 bg-white border border-nbBorder rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn">
                 Изм.
               </button>
@@ -654,7 +692,7 @@
       if (pin === MASTER_PIN) {
         document.getElementById('quiz-locked-view').classList.add('hidden');
         document.getElementById('quiz-unlocked-view').classList.remove('hidden');
-        renderCurrentQ();
+        showToast('Доступ открыт', 'Квиз разблокирован');
       } else {
         alert('Неверный PIN ментора!');
       }
@@ -665,48 +703,8 @@
       document.getElementById('quiz-unlocked-view').classList.add('hidden');
     }
 
-    const QUIZ_QUESTIONS = [
-      { q: "Какой минимальный срок выдержки в дубовых бочках обязателен для шотландского виски (Scotch)?", options: ["1 год", "3 года", "5 лет", "10 лет"], correct: 1, exp: "Scotch Whisky Regulations: не менее 3 лет в дубе." },
-      { q: "Какая доля кукурузы в заторе обязательна для американского Бурбона (Bourbon)?", options: ["Не менее 30%", "Не менее 51%", "Не менее 75%", "100%"], correct: 1, exp: "По закону США в сырье бурбона должно быть минимум 51% кукурузы." }
-    ];
-
-    function renderCurrentQ() {
-      const q = QUIZ_QUESTIONS[currentQIndex];
-      document.getElementById('quiz-progress-num').innerText = `Вопрос ${currentQIndex + 1} из ${QUIZ_QUESTIONS.length}`;
-      document.getElementById('quiz-question-text').innerText = q.q;
-      document.getElementById('quiz-explanation-box').classList.add('hidden');
-      document.getElementById('quiz-next-btn').classList.add('hidden');
-
-      const container = document.getElementById('quiz-options-container');
-      container.innerHTML = q.options.map((opt, i) => `
-        <button onclick="answerQ(${i})" class="w-full text-left p-3 border-2 border-nbBorder rounded-xl font-bold text-xs bg-white hover:bg-yellow-50 shadow-brutal-sm brutal-btn">
-          ${String.fromCharCode(65 + i)}) ${opt}
-        </button>
-      `).join('');
-    }
-
-    function answerQ(index) {
-      const q = QUIZ_QUESTIONS[currentQIndex];
-      const isCorrect = (index === q.correct);
-      if (isCorrect) quizScore++;
-
-      const exp = document.getElementById('quiz-explanation-box');
-      exp.classList.remove('hidden');
-      exp.innerHTML = `<span class="${isCorrect ? 'text-green-700' : 'text-red-700'} font-black block mb-1">${isCorrect ? '✔ Верно!' : '✖ Неверно!'}</span>${q.exp}`;
-      document.getElementById('quiz-next-btn').classList.remove('hidden');
-    }
-
-    function nextQuestion() {
-      currentQIndex++;
-      if (currentQIndex < QUIZ_QUESTIONS.length) {
-        renderCurrentQ();
-      } else {
-        alert('Квиз завершен! Результат зафиксирован.');
-        lockQuiz();
-      }
-    }
-
     function openMentorAssessmentModal(student) {
+      currentStudent = student;
       document.getElementById('modal-student-title').innerText = 'Студент: ' + student;
       document.getElementById('mentor-modal').classList.remove('hidden');
     }
@@ -722,25 +720,58 @@
       document.getElementById('btn-decision-retry').classList.toggle('tab-active', d === 'Пересдача');
     }
 
+    // Надежная отправка в Google Таблицу через Content-Type: text/plain
     async function submitMentorAssessment() {
       const assessment = document.getElementById('modal-assessment-select').value;
       const feedback = document.getElementById('modal-feedback-input').value;
+      const saveBtn = document.getElementById('btn-save-assessment');
 
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'mentor_set_status',
-          student_name: currentStudent,
-          assessment_name: assessment,
-          status: modalDecision,
-          mentor_name: 'Добрый Зайчик',
-          feedback: feedback
-        })
-      });
+      // Анимация кнопки (лоадер)
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<span>⏳ Запись в таблицу...</span>';
 
-      alert(`Зачет «${assessment}» со статусом «${modalDecision}» сохранен в ведомость с точным временем!`);
-      closeMentorModal();
+      const payload = {
+        action: 'mentor_set_status',
+        student_name: currentStudent,
+        assessment_name: assessment,
+        status: modalDecision,
+        mentor_name: 'Добрый Зайчик',
+        feedback: feedback
+      };
+
+      try {
+        // Отправка через text/plain обходит блокировки CORS браузера
+        await fetch(API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(payload)
+        });
+
+        // Мгновенно обновляем локальный стейт
+        const s = STUDENT_DATA[currentStudent];
+        if (modalDecision === 'Сдано') {
+          if (!s.passedList.includes(assessment)) s.passedList.push(assessment);
+          s.debts = s.debts.filter(d => d !== assessment);
+        } else if (modalDecision === 'Хвост' || modalDecision === 'Пересдача') {
+          s.passedList = s.passedList.filter(p => p !== assessment);
+          if (!s.debts.includes(assessment)) s.debts.push(assessment);
+        }
+
+        // Обновляем визуальную ведомость и профиль стажера
+        renderMentorSheet(currentStudent);
+        updateTraineeUI(currentStudent);
+
+        // Показываем Toast-анимацию
+        showToast('Зачет зафиксирован!', `${assessment} — ${modalDecision}`);
+        closeMentorModal();
+      } catch (err) {
+        console.error(err);
+        showToast('Ошибка сети', 'Не удалось связаться с таблицей');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<span>Записать с таймштампом</span>';
+      }
     }
   </script>
 </body>
