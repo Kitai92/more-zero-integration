@@ -96,7 +96,7 @@
 
   <!-- Индикатор загрузки -->
   <div id="loading-bar" class="mb-3 bg-nbCyan border-2 border-nbBorder rounded-xl p-2 text-xs font-bold shadow-brutal-sm flex items-center justify-between">
-    <span id="loading-text">Авторизация через Telegram...</span>
+    <span id="loading-text">Синхронизация с базой...</span>
     <div class="w-3 h-3 rounded-full bg-nbGreen border border-black animate-ping"></div>
   </div>
 
@@ -128,7 +128,7 @@
         НОУШЕН
       </button>
       <button onclick="setTraineeTab('quizzes')" id="nav-quizzes" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
-        КВИЗЫ
+        ОПРОСНИКИ
       </button>
       <button onclick="setTraineeTab('debts')" id="nav-debts" class="py-2 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
         ХВОСТЫ
@@ -199,16 +199,16 @@
       </div>
     </section>
 
-    <!-- Вкладка Квизы (Авто-проверка таймера допуска) -->
+    <!-- Вкладка Опросники -->
     <section id="trainee-tab-quizzes" class="hidden">
       <!-- Закрыто -->
       <div id="quiz-locked-view" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-5 shadow-brutal text-center space-y-3">
         <div class="w-14 h-14 bg-nbPink border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm">
           🔒
         </div>
-        <h3 class="text-base font-black uppercase">Тестирование заблокировано</h3>
+        <h3 class="text-base font-black uppercase">Опросник заблокирован</h3>
         <p class="text-xs font-bold text-gray-600 leading-relaxed">
-          Квиз сдается очно. Попросите ментора на смене открыть вам доступ кнопкой со своего телефона.
+          Теория сдается очно на смене. Попросите ментора открыть вам доступ со своего телефона.
         </p>
         <button onclick="checkMyQuizAccess()" class="w-full bg-nbYellow border-2 border-nbBorder font-black py-2.5 rounded-xl shadow-brutal-sm brutal-btn text-xs uppercase">
           🔄 Проверить доступ
@@ -228,10 +228,10 @@
         </div>
 
         <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal text-center">
-          <h4 class="font-black text-sm uppercase mb-2">Актуальный квиз недели</h4>
-          <p class="text-xs font-bold text-gray-600 mb-4">15 вопросов • Проходной порог 80%</p>
-          <a href="https://forms.gle/8nE7tEEDvCzXoy6L7" target="_blank" class="block w-full bg-nbYellow border-2 border-nbBorder py-3 rounded-xl font-black text-xs uppercase shadow-brutal-sm brutal-btn">
-            Начать тестирование ➔
+          <h4 class="font-black text-sm uppercase mb-2" id="quiz-unlocked-title">Текущая тема</h4>
+          <p class="text-xs font-bold text-gray-600 mb-4">Напишите ответы на вопросы формы. После отправки ментор проверит работу и выставит зачет.</p>
+          <a id="quiz-unlocked-link" href="#" target="_blank" class="block w-full bg-nbYellow border-2 border-nbBorder py-3 rounded-xl font-black text-xs uppercase shadow-brutal-sm brutal-btn">
+            Перейти к заполнению формы ➔
           </a>
         </div>
       </div>
@@ -256,7 +256,7 @@
         📊 ВЕДОМОСТЬ ЗАЧЕТОВ
       </button>
       <button onclick="setMentorTab('access')" id="m-nav-access" class="py-2.5 text-xs font-black border-2 border-nbBorder rounded-xl bg-white shadow-brutal-sm brutal-btn">
-        🔓 ДОСТУП К КВИЗАМ
+        🔓 ДОСТУП К ТЕОРИИ
       </button>
     </nav>
 
@@ -291,24 +291,24 @@
       </div>
     </section>
 
-    <!-- УПРАВЛЕНИЕ ДОСТУПОМ К КВИЗАМ КНОПКАМИ -->
+    <!-- УПРАВЛЕНИЕ ДОСТУПОМ -->
     <section id="mentor-tab-access" class="hidden space-y-3">
       <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
-        <h3 class="font-black text-sm uppercase mb-2">Управление доступом к квизам</h3>
+        <h3 class="font-black text-sm uppercase mb-2">Выдача допуска к опросникам</h3>
         <p class="text-xs font-bold text-gray-600 mb-4">
-          Нажмите кнопку, чтобы открыть выбранному стажеру тестирование на 30 минут без ввода PIN-кодов.
+          Нажмите кнопку, чтобы открыть выбранному стажеру опросник на 30 минут.
         </p>
 
         <div class="border-2 border-nbBorder rounded-xl p-3 bg-yellow-50 mb-3 space-y-3">
           <div class="flex justify-between items-center">
-            <span class="text-xs font-black uppercase">Выбрать стажера:</span>
+            <span class="text-xs font-black uppercase">Стажер:</span>
             <select id="access-student-select" onchange="updateAccessCardStatus(this.value)" class="bg-white border-2 border-nbBorder rounded-lg px-2 py-1 text-xs font-black">
             </select>
           </div>
 
           <div class="p-2.5 bg-white border-2 border-nbBorder rounded-xl flex items-center justify-between">
             <div>
-              <span class="text-[10px] font-bold text-gray-500 block">Текущий статус допуска:</span>
+              <span class="text-[10px] font-bold text-gray-500 block">Статус допуска:</span>
               <span id="access-current-status-label" class="text-xs font-black text-red-600">Закрыт</span>
             </div>
             <span id="access-timer-badge" class="hidden bg-nbGreen border border-nbBorder px-2 py-0.5 rounded text-[11px] font-black">
@@ -328,21 +328,31 @@
       </div>
     </section>
 
-    <!-- МОДАЛКА АТТЕСТАЦИИ -->
+    <!-- МОДАЛКА АТТЕСТАЦИИ МЕНТОРОМ -->
     <div id="mentor-modal" class="hidden fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
       <div class="bg-white border-[3px] border-nbBorder rounded-2xl p-4 shadow-brutal w-full max-w-sm">
         <div class="flex justify-between items-start mb-2 border-b-2 border-nbBorder pb-2">
           <div>
-            <h4 class="font-black text-sm uppercase">Аттестация норматива</h4>
+            <h4 class="font-black text-sm uppercase">Проверка норматива</h4>
             <p class="text-xs font-bold text-gray-600" id="modal-student-title">Студент: ...</p>
           </div>
           <button onclick="closeMentorModal()" class="text-xs font-black border-2 border-nbBorder px-2 py-0.5 rounded-lg bg-gray-100">✕</button>
         </div>
 
         <div class="space-y-2.5 mb-3">
-          <label class="text-xs font-black block">Тема зачета:</label>
+          <label class="text-xs font-black block">Тема норматива:</label>
           <div id="modal-selected-topic-display" class="p-2 border-2 border-nbBorder rounded-xl bg-yellow-50 text-xs font-black"></div>
           <input type="hidden" id="modal-assessment-hidden-input">
+
+          <!-- Ссылки на форму и ответы для ментора -->
+          <div id="modal-quiz-quick-links" class="flex gap-1.5 hidden">
+            <a id="modal-btn-open-form" href="#" target="_blank" class="flex-1 bg-white border-2 border-nbBorder py-1 text-center rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn">
+              📝 Вопросы формы
+            </a>
+            <a id="modal-btn-open-sheet" href="#" target="_blank" class="flex-1 bg-white border-2 border-nbBorder py-1 text-center rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn text-green-800">
+              📊 Ответы стажера
+            </a>
+          </div>
 
           <label class="text-xs font-black block">Решение ментора:</label>
           <div class="grid grid-cols-3 gap-1.5">
@@ -351,8 +361,8 @@
             <button type="button" onclick="setModalDecision('Ожидает')" id="btn-decision-wait" class="py-2 text-xs font-black border-2 border-nbBorder rounded-lg bg-white">СБРОС</button>
           </div>
 
-          <label class="text-xs font-black block">Комментарий ментора:</label>
-          <input type="text" id="modal-feedback-input" placeholder="Отметка о сдаче..." 
+          <label class="text-xs font-black block">Комментарий (фидбек ментора):</label>
+          <input type="text" id="modal-feedback-input" placeholder="Ответы раскрыты полностью..." 
                  class="w-full bg-white border-2 border-nbBorder rounded-xl p-2 font-bold text-xs focus:outline-none">
         </div>
 
@@ -371,6 +381,33 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbxLB0wmFOrNd-fzn-Uise4kut8DNmDl5GgDlgL39loa49XEc0FOfDppZXFkc3lrE-E0Aw/exec';
     const TOTAL_ASSESSMENTS = 34;
+
+    const QUIZ_LINKS_MAP = {
+      'Тест по ценностям': { form: 'https://forms.gle/LbfcgxsRQn9L5huL9', sheet: '' },
+      'Функциональные карты ролей': { form: 'https://forms.gle/8nE7tEEDvCzXoy6L7', sheet: 'https://docs.google.com/spreadsheets/d/1vyf-dDjJnKTbJzqUOzw4jXoiLIsDwe-KsOLi_w715Ek/edit' },
+      'Правила гигиены': { form: 'https://forms.gle/zAia4kjZDVG2JU28A', sheet: 'https://docs.google.com/spreadsheets/d/1R-G-d2Xy2ap1_Clwqupnf0E4HxKd709NQJexExOI6zs/edit' },
+      'Карта коммуникаций': { form: 'https://forms.gle/8nE7tEEDvCzXoy6L7', sheet: 'https://docs.google.com/spreadsheets/d/1vyf-dDjJnKTbJzqUOzw4jXoiLIsDwe-KsOLi_w715Ek/edit' },
+      'Внешний вид сотрудника и бара': { form: 'https://forms.gle/zAia4kjZDVG2JU28A', sheet: 'https://docs.google.com/spreadsheets/d/1R-G-d2Xy2ap1_Clwqupnf0E4HxKd709NQJexExOI6zs/edit' },
+      'Словари бара и кухни': { form: 'https://forms.gle/t8vT6NGMm3aXyUgS7', sheet: 'https://docs.google.com/spreadsheets/d/1x5B03OqIPKOleTd6EO_KYZYxJM1jcuWimxX8A9p2D0Q/edit' },
+      'Сервис и приоритеты': { form: 'https://forms.gle/Eo5adKZCZZXVTunb7', sheet: 'https://docs.google.com/spreadsheets/d/1nUCAYGU__d3moF0Sva_pSqU5jHNro4XI73JTN64LSqE/edit' },
+      'Дистилляция, мацерация, ферментация': { form: 'https://forms.gle/vXm8KC7xF3P9Wyvy9', sheet: 'https://docs.google.com/spreadsheets/d/1pSZGBzlQPYSPEXSd2KGlVV0TBHcFonT-ZLcmcG9tCpU/edit' },
+      'Действия в конфликтных ситуациях и ЧП': { form: 'https://forms.gle/DwzJUK3cAmATKZxD7', sheet: 'https://docs.google.com/spreadsheets/d/1wV_alDDvPIsSKiiSn4LkZLOLD3EYh2KsCpaA76EPlbA/edit' },
+      'Легенды классических напитков': { form: 'https://forms.gle/5ZN83zRMNzYB9Lqf7', sheet: 'https://docs.google.com/spreadsheets/d/1D9bojhSV5UboTeWXsz8gSy39WV9icZgqboYii1xCMm0/edit' },
+      'Виски': { form: 'https://forms.gle/LNwQ5Bqt74CQdgPk6', sheet: 'https://docs.google.com/spreadsheets/d/1JRBSVTuWpMnSfon__G6hVhpNoTyBBt7M3PBEmGjuwqE/edit' },
+      'Уанпейджеры виски': { form: 'https://forms.gle/TzPNN9XsR3pWpzvo7', sheet: 'https://docs.google.com/spreadsheets/d/1VJDndZOS0rjleax4DD7BW3sDURG_0CO1jL4nKo_sXsY/edit' },
+      'Техники и технологии точного оборудования': { form: 'https://forms.gle/eBcrcYK6ADCfYfUe9', sheet: 'https://docs.google.com/spreadsheets/d/1kFVm7TfOQ9Ypa4CE2NIqtUXcZX4uekKHwe21ssxHTZ8/edit' },
+      'Вкусообразование': { form: 'https://forms.gle/iJtF4KHBxniao6By8', sheet: 'https://docs.google.com/spreadsheets/d/1UPVM5u4mwV9B_-GO5MmAxJCW0pCjhDJxOZfCgtJ0Ybo/edit' },
+      'Джин, Женевер и Водка': { form: 'https://forms.gle/tB9HzBHzQmCe813w8', sheet: 'https://docs.google.com/spreadsheets/d/1JxmzKjqkkM2xK7VbqbQ7TL-738fhiIVGmxRQueQNn6Y/edit' },
+      'Уанпейджеры Джин, Женевер, Водка': { form: 'https://forms.gle/2wBojt1wTXRaMwtV8', sheet: 'https://docs.google.com/spreadsheets/d/1l7atzPdcBC3ApRy7yJ2Roe-w0ZRYUDjAM7HhaJ9flRs/edit' },
+      'Текила и ром': { form: 'https://forms.gle/UNdEUHoa6vygmfia7', sheet: 'https://docs.google.com/spreadsheets/d/1rytzbWcj3OBP87CDps1zoOFRR5Smv_ideYIOXErzID8/edit' },
+      'Уанпейджеры текила и ром': { form: 'https://forms.gle/Mf4zVZH4xwRSbswKA', sheet: 'https://docs.google.com/spreadsheets/d/1Oz1ZTnp2j-sE-WKIqexbyv8Ag6T2gd_gnJMAuDOz7Ak/edit' },
+      'Амаро, вермуты, ликеры, анисовые': { form: 'https://forms.gle/LzeHTeDHRMjcMT7LA', sheet: 'https://docs.google.com/spreadsheets/d/1DiVpIxmGssBuZfJH3_ZZhfeqhhW3aq1UR_0mBxZvqh0/edit' },
+      'Уанпейджеры Амаро, вермуты, ликеры, анисовые': { form: 'https://forms.gle/xu1cpNTiVr5wPy6G8', sheet: 'https://docs.google.com/spreadsheets/d/1x2tbRSAsELmiFq2g0rJbN4zNrCOEbvP_Ykjw1hTSTHE/edit' },
+      'Бренди': { form: 'https://forms.gle/wQVmpt22UBknt8wk9', sheet: 'https://docs.google.com/spreadsheets/d/1jzcxfp0TLgthKMBQwomBjgYP5CTnBmI_87pcKKeNG5A/edit' },
+      'Уанпейджеры Бренди': { form: 'https://forms.gle/qBN1HwjPo19LPbCu9', sheet: 'https://docs.google.com/spreadsheets/d/1N1Jcrl9N-cj9MpeTtEcnPpRoLWgrtFSUDX5SFznj-hQ/edit' },
+      'Крепленые вина + уанпейджеры': { form: 'https://forms.gle/gZLTAE2aTb6BamUA6', sheet: 'https://docs.google.com/spreadsheets/d/169CKM-e1fkeusoXClS99uvlqQvGm4cLEjw5zKkDZX2o/edit' },
+      'Азиатский алкоголь': { form: 'https://forms.gle/V1Bne5wRvJhA3WteA', sheet: 'https://docs.google.com/spreadsheets/d/1sMVVfuSdnAL-SDuZiL1EmP32v4Bt8Jo_Wfw2Ux6F1Y4/edit' }
+    };
 
     let currentRole = 'trainee';
     let currentMentorName = 'Добрый Зайчик';
@@ -497,6 +534,14 @@
 
       document.getElementById('quiz-locked-view').classList.toggle('hidden', isOpen);
       document.getElementById('quiz-unlocked-view').classList.toggle('hidden', !isOpen);
+
+      if (isOpen) {
+        const pendingQuiz = currentRecords.find(r => (r.status === 'Ожидает' || r.status === 'Хвост') && QUIZ_LINKS_MAP[r.title]);
+        if (pendingQuiz && QUIZ_LINKS_MAP[pendingQuiz.title]) {
+          document.getElementById('quiz-unlocked-title').innerText = pendingQuiz.title;
+          document.getElementById('quiz-unlocked-link').href = QUIZ_LINKS_MAP[pendingQuiz.title].form;
+        }
+      }
     }
 
     async function checkMyQuizAccess() {
@@ -605,7 +650,7 @@
           })
         });
 
-        showToast(enable ? 'Доступ открыт!' : 'Доступ отозван', `${targetStudent}`);
+        showToast(enable ? 'Доступ открыт!' : 'Доступ закрыт', `${targetStudent}`);
         setTimeout(() => loadStudentLiveRecords(targetStudent), 600);
       } catch (err) {
         console.error(err);
@@ -618,7 +663,6 @@
     function updateCountdowns() {
       const now = Date.now();
 
-      // Таймер стажера
       if (currentRole === 'trainee' && myQuizAccessUntil > now) {
         const leftSec = Math.floor((myQuizAccessUntil - now) / 1000);
         const m = Math.floor(leftSec / 60);
@@ -629,7 +673,6 @@
         evaluateQuizState();
       }
 
-      // Таймер в кабинете ментора
       const accessStudent = document.getElementById('access-student-select') ? document.getElementById('access-student-select').value : null;
       if (accessStudent) {
         const studentObj = studentsDashboardList.find(s => s.name === accessStudent);
@@ -658,13 +701,29 @@
           rowBg = 'bg-red-50';
         }
 
+        const quizLinks = QUIZ_LINKS_MAP[r.title];
+
         return `
           <div class="p-2.5 border-2 border-nbBorder rounded-xl ${rowBg} flex items-center justify-between">
             <div class="pr-2">
               <span class="text-[10px] font-black text-gray-500 block uppercase">Н${r.week_id} • ${r.type}</span>
               <h5 class="text-xs font-extrabold leading-tight">${r.title}</h5>
               ${r.timestamp ? `<span class="text-[9px] text-gray-400 block">${r.timestamp} • ${r.evaluator || ''}</span>` : ''}
+              
+              ${quizLinks ? `
+                <div class="flex gap-2 mt-1">
+                  <a href="${quizLinks.form}" target="_blank" class="text-[10px] font-bold text-blue-600 underline">
+                    📝 Форма
+                  </a>
+                  ${quizLinks.sheet ? `
+                    <a href="${quizLinks.sheet}" target="_blank" class="text-[10px] font-bold text-green-700 underline">
+                      📊 Ответы
+                    </a>
+                  ` : ''}
+                </div>
+              ` : ''}
             </div>
+
             <div class="flex items-center gap-1.5 shrink-0">
               <span>${badge}</span>
               <button type="button" onclick="openAssessmentEditModal(${idx})" class="px-2 py-1 bg-white border-2 border-nbBorder rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn hover:bg-yellow-100">
@@ -684,6 +743,21 @@
       document.getElementById('modal-selected-topic-display').innerText = `[Неделя ${record.week_id}] ${record.title}`;
       document.getElementById('modal-assessment-hidden-input').value = record.title;
       document.getElementById('modal-feedback-input').value = record.feedback || '';
+
+      const quizInfo = QUIZ_LINKS_MAP[record.title];
+      const quickBox = document.getElementById('modal-quiz-quick-links');
+      if (quizInfo) {
+        quickBox.classList.remove('hidden');
+        document.getElementById('modal-btn-open-form').href = quizInfo.form;
+        if (quizInfo.sheet) {
+          document.getElementById('modal-btn-open-sheet').href = quizInfo.sheet;
+          document.getElementById('modal-btn-open-sheet').classList.remove('hidden');
+        } else {
+          document.getElementById('modal-btn-open-sheet').classList.add('hidden');
+        }
+      } else {
+        quickBox.classList.add('hidden');
+      }
 
       setModalDecision(record.status === 'Сдано' ? 'Сдано' : (record.status === 'Хвост' ? 'Хвост' : 'Ожидает'));
       document.getElementById('mentor-modal').classList.remove('hidden');
