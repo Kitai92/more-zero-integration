@@ -199,14 +199,14 @@
       </div>
     </section>
 
-    <!-- Вкладка Опросники -->
-    <section id="trainee-tab-quizzes" class="hidden">
-      <!-- Закрыто -->
+    <!-- Вкладка Опросники: выбор любой несданной темы -->
+    <section id="trainee-tab-quizzes" class="hidden space-y-3">
+      <!-- Закрыто ментором -->
       <div id="quiz-locked-view" class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-5 shadow-brutal text-center space-y-3">
         <div class="w-14 h-14 bg-nbPink border-2 border-nbBorder rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-brutal-sm">
           🔒
         </div>
-        <h3 class="text-base font-black uppercase">Опросник заблокирован</h3>
+        <h3 class="text-base font-black uppercase">Опросники заблокированы</h3>
         <p class="text-xs font-bold text-gray-600 leading-relaxed">
           Теория сдается очно на смене. Попросите ментора открыть вам доступ со своего телефона.
         </p>
@@ -219,18 +219,35 @@
       <div id="quiz-unlocked-view" class="hidden space-y-3">
         <div class="bg-nbGreen border-[2.5px] border-nbBorder rounded-2xl p-3 shadow-brutal flex items-center justify-between">
           <div>
-            <span class="text-[10px] font-black uppercase block text-gray-800">Доступ открыт ментором</span>
+            <span class="text-[10px] font-black uppercase block text-gray-800">Доступ открыт на смену</span>
             <span id="quiz-timer-text" class="text-xs font-black">Осталось: 30:00</span>
           </div>
-          <button onclick="checkMyQuizAccess()" class="bg-white border border-nbBorder px-2 py-1 rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn">
-            Обновить
+          <button onclick="checkMyQuizAccess()" class="bg-white border border-nbBorder px-2.5 py-1 rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn">
+            🔄 Обновить
           </button>
         </div>
 
-        <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal text-center">
-          <h4 class="font-black text-sm uppercase mb-2" id="quiz-unlocked-title">Текущая тема</h4>
-          <p class="text-xs font-bold text-gray-600 mb-4">Напишите ответы на вопросы формы. После отправки ментор проверит работу и выставит зачет.</p>
-          <a id="quiz-unlocked-link" href="#" target="_blank" class="block w-full bg-nbYellow border-2 border-nbBorder py-3 rounded-xl font-black text-xs uppercase shadow-brutal-sm brutal-btn">
+        <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal space-y-3">
+          <div>
+            <label class="text-xs font-black uppercase block mb-1.5 text-gray-700">Выбери опросник для сдачи:</label>
+            <select id="trainee-quiz-selector" onchange="onSelectTraineeQuiz(this.value)" class="w-full bg-yellow-50 border-2 border-nbBorder rounded-xl p-2.5 text-xs font-black focus:outline-none shadow-brutal-sm">
+            </select>
+          </div>
+
+          <div id="trainee-quiz-active-card" class="p-3 border-2 border-dashed border-nbBorder rounded-xl bg-white space-y-2">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-[10px] font-bold text-gray-500 block uppercase" id="selected-quiz-week">Неделя ...</span>
+                <h4 class="font-black text-sm uppercase leading-tight" id="selected-quiz-title">Выберите тему</h4>
+              </div>
+              <span id="selected-quiz-status-pill" class="bg-yellow-100 text-yellow-800 border border-nbBorder px-2 py-0.5 rounded text-[10px] font-black uppercase">Ожидает</span>
+            </div>
+            <p class="text-[11px] font-bold text-gray-600 leading-snug">
+              Пишите ответы своими словами. После отправки формы сообщите ментору для проверки.
+            </p>
+          </div>
+
+          <a id="quiz-unlocked-link" href="#" target="_blank" class="block w-full text-center bg-nbYellow border-2 border-nbBorder py-3 rounded-xl font-black text-xs uppercase shadow-brutal-sm brutal-btn">
             Перейти к заполнению формы ➔
           </a>
         </div>
@@ -296,7 +313,7 @@
       <div class="bg-white border-[2.5px] border-nbBorder rounded-2xl p-4 shadow-brutal">
         <h3 class="font-black text-sm uppercase mb-2">Выдача допуска к опросникам</h3>
         <p class="text-xs font-bold text-gray-600 mb-4">
-          Нажмите кнопку, чтобы открыть выбранному стажеру опросник на 30 минут.
+          Открывает выбранному стажеру допуск ко всем несданным опросникам на 30 минут. Стажер сам выбирает тему в меню.
         </p>
 
         <div class="border-2 border-nbBorder rounded-xl p-3 bg-yellow-50 mb-3 space-y-3">
@@ -318,7 +335,7 @@
 
           <div class="flex gap-2">
             <button id="btn-grant-access" onclick="toggleQuizAccess(true)" class="flex-1 bg-nbGreen border-2 border-nbBorder py-2.5 rounded-xl font-black text-xs shadow-brutal-sm brutal-btn uppercase">
-              🟢 Открыть на 30 мин
+              🟢 Открыть опросники на 30 мин
             </button>
             <button id="btn-revoke-access" onclick="toggleQuizAccess(false)" class="px-3 bg-nbPink text-white border-2 border-nbBorder py-2.5 rounded-xl font-black text-xs shadow-brutal-sm brutal-btn uppercase">
               ✕ Закрыть
@@ -344,7 +361,6 @@
           <div id="modal-selected-topic-display" class="p-2 border-2 border-nbBorder rounded-xl bg-yellow-50 text-xs font-black"></div>
           <input type="hidden" id="modal-assessment-hidden-input">
 
-          <!-- Ссылки на форму и ответы для ментора -->
           <div id="modal-quiz-quick-links" class="flex gap-1.5 hidden">
             <a id="modal-btn-open-form" href="#" target="_blank" class="flex-1 bg-white border-2 border-nbBorder py-1 text-center rounded-lg text-[10px] font-black shadow-brutal-sm brutal-btn">
               📝 Вопросы формы
@@ -528,6 +544,7 @@
       }
     }
 
+    // Оценка доступности и наполнение селектора несданных опросников
     function evaluateQuizState() {
       const now = Date.now();
       const isOpen = myQuizAccessUntil > now;
@@ -536,26 +553,74 @@
       document.getElementById('quiz-unlocked-view').classList.toggle('hidden', !isOpen);
 
       if (isOpen) {
-        const pendingQuiz = currentRecords.find(r => (r.status === 'Ожидает' || r.status === 'Хвост') && QUIZ_LINKS_MAP[r.title]);
-        if (pendingQuiz && QUIZ_LINKS_MAP[pendingQuiz.title]) {
-          document.getElementById('quiz-unlocked-title').innerText = pendingQuiz.title;
-          document.getElementById('quiz-unlocked-link').href = QUIZ_LINKS_MAP[pendingQuiz.title].form;
+        // Фильтруем только те опросники (формы), которые еще НЕ сданы
+        const pendingQuizzes = currentRecords.filter(r => 
+          (r.status === 'Ожидает' || r.status === 'Хвост') && 
+          QUIZ_LINKS_MAP[r.title]
+        );
+
+        const selector = document.getElementById('trainee-quiz-selector');
+
+        if (pendingQuizzes.length === 0) {
+          selector.innerHTML = '<option value="">Все теоретические опросники сданы! 🎉</option>';
+          document.getElementById('selected-quiz-week').innerText = 'Финиш';
+          document.getElementById('selected-quiz-title').innerText = 'Теория закрыта на 100%';
+          document.getElementById('selected-quiz-status-pill').innerText = 'СДАНО';
+          document.getElementById('selected-quiz-status-pill').className = 'bg-nbGreen border border-nbBorder px-2 py-0.5 rounded text-[10px] font-black uppercase';
+          document.getElementById('quiz-unlocked-link').classList.add('hidden');
+          return;
         }
+
+        document.getElementById('quiz-unlocked-link').classList.remove('hidden');
+
+        // Наполняем селектор несданными темами
+        selector.innerHTML = pendingQuizzes.map(q => `
+          <option value="${q.title}">[Н${q.week_id}] ${q.title} (${q.status})</option>
+        `).join('');
+
+        // Активируем первый из доступных
+        onSelectTraineeQuiz(pendingQuizzes[0].title);
+      }
+    }
+
+    function onSelectTraineeQuiz(quizTitle) {
+      if (!quizTitle) return;
+      const record = currentRecords.find(r => r.title === quizTitle);
+      const quizInfo = QUIZ_LINKS_MAP[quizTitle];
+
+      if (record && quizInfo) {
+        document.getElementById('selected-quiz-week').innerText = `Неделя ${record.week_id} • Теория`;
+        document.getElementById('selected-quiz-title').innerText = record.title;
+        
+        const pill = document.getElementById('selected-quiz-status-pill');
+        pill.innerText = record.status;
+        pill.className = record.status === 'Хвост' 
+          ? 'bg-nbPink text-white border border-nbBorder px-2 py-0.5 rounded text-[10px] font-black uppercase'
+          : 'bg-yellow-100 text-yellow-800 border border-nbBorder px-2 py-0.5 rounded text-[10px] font-black uppercase';
+
+        document.getElementById('quiz-unlocked-link').href = quizInfo.form;
       }
     }
 
     async function checkMyQuizAccess() {
       const name = document.getElementById('trainee-name-display').innerText;
+      document.getElementById('loading-bar').classList.remove('hidden');
+      document.getElementById('loading-text').innerText = 'Синхронизация зачетов...';
+
       try {
         const response = await fetch(`${API_URL}?action=get_student_live&name=${encodeURIComponent(name)}`);
         const data = await response.json();
         if (data.success) {
           myQuizAccessUntil = data.quiz_access_until || 0;
+          currentRecords = data.records || [];
+          renderTraineeData(data.passed_count, data.debts_count, currentRecords);
           evaluateQuizState();
-          showToast('Статус обновлен', myQuizAccessUntil > Date.now() ? 'Доступ открыт!' : 'Доступ закрыт');
+          showToast('Статус обновлен', myQuizAccessUntil > Date.now() ? 'Доступ активен!' : 'Доступ закрыт');
         }
       } catch (err) {
         console.error(err);
+      } finally {
+        setTimeout(() => document.getElementById('loading-bar').classList.add('hidden'), 300);
       }
     }
 
@@ -816,6 +881,9 @@
         document.getElementById('trainee-tab-' + t).classList.toggle('hidden', t !== tab);
         document.getElementById('nav-' + t).classList.toggle('tab-active', t === tab);
       });
+      if (tab === 'quizzes') {
+        evaluateQuizState();
+      }
     }
 
     function setMentorTab(tab) {
